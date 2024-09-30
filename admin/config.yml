@@ -1,9 +1,8 @@
 backend:
   name: git-gateway
-  branch: main  # Branch where the content is stored
-
-media_folder: "static/img" # Where uploaded images are stored in the repo
-public_folder: "/img" # Public URL for images
+  branch: main # or master, depending on your GitHub repository
+media_folder: "static/img/uploads" # Folder where uploaded images will go
+public_folder: "/img/uploads"
 
 collections:
   - name: "items"
