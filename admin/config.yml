@@ -1,7 +1,10 @@
 backend:
   name: git-gateway
-  branch: main # or master, depending on your GitHub repository
-media_folder: "static/img/uploads" # Folder where uploaded images will go
+  branch: main
+  identity_url: https://your-site.netlify.app/.netlify/identity
+  role: owner
+
+media_folder: "static/img/uploads"
 public_folder: "/img/uploads"
 
 collections:
