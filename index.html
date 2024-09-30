@@ -9,6 +9,12 @@
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
     }
+    .welcome {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 2em;
+      font-weight: bold;
+    }
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -67,6 +73,11 @@
 </head>
 <body>
 
+  <!-- Welcome Heading -->
+  <div class="welcome">
+    Welcome to AuctionAisle
+  </div>
+
   <div class="gallery">
     <img src="image1.jpg" alt="Item 1" onclick="openModal(1)">
     <img src="image2.jpg" alt="Item 2" onclick="openModal(2)">
@@ -99,6 +110,18 @@
     }
   </script>
 
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+</script>
+
 </body>
 </html>
-
