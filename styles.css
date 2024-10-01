@@ -21,6 +21,7 @@ body {
 
 .gallery img {
   width: 100%;
+  height: auto;  /* Allow for natural height based on aspect ratio */
   cursor: pointer;
   border-radius: 8px;
   transition: transform 0.3s ease;
