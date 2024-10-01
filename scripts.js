@@ -5,7 +5,10 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    data.records.forEach(record => {
+    // Reverse the order of records to display the latest first
+    const reversedRecords = data.records.reverse();
+
+    reversedRecords.forEach(record => {
       const post = record.fields;
       const imgElement = document.createElement('img');
       imgElement.src = post['first image'];  // Use the first image from Airtable
