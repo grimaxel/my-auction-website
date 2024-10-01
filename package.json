@@ -4,7 +4,7 @@
   "description": "A project to fetch and display auction posts from Airtable",
   "main": "index.js",
   "dependencies": {
-    "node-fetch": "^2.6.7"  // Use the older 2.x version of node-fetch to ensure compatibility
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {},
   "scripts": {},
