@@ -94,7 +94,7 @@
 
   <!-- JavaScript to Fetch Data from Airtable and Display Images -->
   <script>
-    const apiKey = 'your_personal_access_token';  // Replace with your Airtable Personal Access Token
+    const apiKey = process.env.AIRTABLE_API_KEY;  // Replace with your Airtable Personal Access Token
     const baseId = 'appmwUSpnRzUv06sj';  // Your Airtable Base ID
     const tableName = 'Table%201';  // Your Table Name
 
