@@ -78,35 +78,70 @@
     Welcome to auctionAIsle
   </div>
 
-  <div class="gallery">
-    <img src="image1.jpg" alt="Item 1" onclick="openModal(1)">
-    <img src="image2.jpg" alt="Item 2" onclick="openModal(2)">
-    <img src="image3.jpg" alt="Item 3" onclick="openModal(3)">
-    <img src="image4.jpg" alt="Item 4" onclick="openModal(4)">
-    <img src="image5.jpg" alt="Item 5" onclick="openModal(5)">
-  </div>
+  <!-- Empty Gallery to be populated by JavaScript -->
+  <div class="gallery" id="gallery"></div>
 
   <!-- Modal -->
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <div class="modal-images">
-        <img src="image1.jpg" alt="Modal Image 1">
-        <img src="image2.jpg" alt="Modal Image 2">
-        <!-- Add more images dynamically -->
-      </div>
+      <div class="modal-images"></div>
       <div class="description">
-        <p>This is a description for the auction item. You can add more details here.</p>
+        <p></p>
       </div>
     </div>
   </div>
 
+  <!-- JavaScript to Fetch Data from Airtable and Display Images -->
   <script>
-    function openModal(item) {
-      document.getElementById('myModal').style.display = "block";
+    const apiKey = 'your_personal_access_token';  // Replace with your Airtable Personal Access Token
+    const baseId = 'appmwUSpnRzUv06sj';  // Your Airtable Base ID
+    const tableName = 'Table%201';  // Your Table Name
+
+    // Function to fetch data from Airtable and dynamically populate the gallery
+    fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = ''; // Clear existing content
+        data.records.forEach(record => {
+          const post = record.fields;
+          const imgElement = document.createElement('img');
+          imgElement.src = post['first image']; // Use the first image from Airtable
+          imgElement.alt = post.caption || 'Auction item';  // Use the caption or a fallback text
+          imgElement.onclick = () => openModal(post);  // Open modal when clicked
+
+          gallery.appendChild(imgElement);  // Add the image to the gallery
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+    function openModal(post) {
+      // Display modal with images and caption from Airtable
+      const modal = document.getElementById('myModal');
+      const modalImages = modal.querySelector('.modal-images');
+      const description = modal.querySelector('.description p');
+
+      modalImages.innerHTML = '';  // Clear any previous images
+      ['first image', 'second image', 'third image'].forEach(field => {
+        if (post[field]) {
+          const imgElement = document.createElement('img');
+          imgElement.src = post[field];  // Add images from Airtable
+          modalImages.appendChild(imgElement);
+        }
+      });
+
+      description.textContent = post.caption || 'No description available';  // Add the caption
+
+      modal.style.display = 'block';  // Show the modal
     }
+
     function closeModal() {
-      document.getElementById('myModal').style.display = "none";
+      document.getElementById('myModal').style.display = 'none';  // Hide the modal
     }
   </script>
 
