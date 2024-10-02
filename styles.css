@@ -80,15 +80,16 @@ body {
   margin-top: 20px;
 }
 
-/* Media Query for small screens - force two columns */
-@media screen and (max-width: 768px) {
+/* Media query for smaller screens (e.g., mobile) */
+@media (max-width: 768px) {
   .gallery {
-    grid-template-columns: repeat(2, 1fr); /* Force two columns */
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .gallery img {
-    width: auto;
-    max-width: 100%; /* Adjust the width of the images to fit the smaller grid */
+  /* Stagger the second column images */
+  .gallery img:nth-child(2n) {
+    transform: translateY(20%);
   }
 }
+
 
