@@ -27,81 +27,76 @@ fetch('/.netlify/functions/fetchAirtable')
 
 // Function to open modal with post images, caption, and auction details from Table 2
 function openModal(rowNumber, table2Records) {
-    const modal = document.getElementById('myModal');
-    const modalImages = modal.querySelector('.modal-images');
-    const description = modal.querySelector('.description p');
-    const countdownTimer = modal.querySelector('.countdown-timer');
+  const modal = document.getElementById('myModal');
+  const modalImages = modal.querySelector('.modal-images');
+  const description = modal.querySelector('.description p');
+  const countdownDiv = modal.querySelector('.countdown-timer');
 
-    modalImages.innerHTML = '';  // Clear previous images
-    description.innerHTML = '';  // Clear previous description
-    countdownTimer.innerHTML = '';  // Clear previous countdown
+  modalImages.innerHTML = '';  // Clear previous images
+  description.innerHTML = '';  // Clear previous description
+  countdownDiv.innerHTML = '';  // Clear countdown
 
-    // Find the matching record in Table 2 by row number
-    const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
+  // Find the matching record in Table 2 by row number
+  const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
 
-    if (matchingRecord) {
-        const post = matchingRecord.fields;
+  if (matchingRecord) {
+    const post = matchingRecord.fields;
 
-        // Add all images to the modal
-        ['first image', 'second image', 'third image'].forEach(field => {
-            if (post[field]) {
-                const imgElement = document.createElement('img');
-                imgElement.src = post[field];  // Add images from Table 2
-                modalImages.appendChild(imgElement);
-            }
-        });
+    // Add all images to the modal
+    ['first image', 'second image', 'third image'].forEach(field => {
+      if (post[field]) {
+        const imgElement = document.createElement('img');
+        imgElement.src = post[field];  // Add images from Table 2
+        modalImages.appendChild(imgElement);
+      }
+    });
 
-        // Add caption, auction price, and link to the modal
-        description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
-                                 <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
-                                 <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
+    // Add caption, auction price, and link to the modal
+    description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
+                             <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
+                             <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
 
-        // Extract the end date and log it
-        const endDateStr = post['end date'];
-        console.log("End Date String from Airtable:", endDateStr);
+    // Calculate and display the countdown timer
+    const endDate = new Date(post['end date']);
+    startCountdown(endDate, countdownDiv);
 
-        if (endDateStr) {
-            const endDate = new Date(endDateStr.replace("okt", "Oct")); // Replace month for compatibility
-            console.log("Parsed End Date:", endDate);
+    // Display the modal
+    modal.style.display = 'block';
+  }
+}
 
-            if (!isNaN(endDate)) {
-                updateCountdown(endDate, countdownTimer);
-            } else {
-                console.error("Invalid Date Format. Cannot parse:", endDateStr);
-                countdownTimer.innerHTML = "Invalid Date";
-            }
-        } else {
-            countdownTimer.innerHTML = "No end date provided";
-        }
+// Function to start countdown timer
+function startCountdown(endDate, countdownDiv) {
+  function updateCountdown() {
+    const now = new Date();
+    const timeDiff = endDate - now;
+    const minutesLeft = Math.floor(timeDiff / (1000 * 60));
+    const hoursLeft = Math.floor(minutesLeft / 60);
+    const minsLeft = minutesLeft % 60;
 
-        // Display the modal
-        modal.style.display = 'block';
+    if (timeDiff <= 0) {
+      countdownDiv.innerHTML = 'Auction ended';
+      return;
     }
+
+    // Update countdown text
+    countdownDiv.innerHTML = `<span>${hoursLeft} h ${minsLeft} min</span>`;
+
+    // Update the progress bar
+    const totalMinutes = 168 * 60;  // 168 hours is the full width
+    const minutesElapsed = totalMinutes - minutesLeft;
+    const progressPercentage = (minutesElapsed / totalMinutes) * 100;
+    countdownDiv.style.setProperty('--progress', `${progressPercentage}%`);
+
+    // Repeat every minute
+    setTimeout(updateCountdown, 60000);
+  }
+
+  updateCountdown();  // Start countdown
 }
 
-// Countdown timer function
-function updateCountdown(endDate, countdownTimer) {
-    const interval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = endDate.getTime() - now;
-
-        if (distance < 0) {
-            clearInterval(interval);
-            countdownTimer.innerHTML = "Expired";
-            countdownTimer.style.width = '0%';  // Set bar width to 0 if expired
-            return;
-        }
-
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-        countdownTimer.innerHTML = `${hours} h ${minutes} min`;
-
-        // Bar animation based on remaining time
-        const totalDuration = 168 * 60 * 60 * 1000;  // 168 hours in milliseconds
-        const percentRemaining = Math.max((distance / totalDuration) * 100, 0);
-        countdownTimer.style.width = `${percentRemaining}%`;
-
-        console.log("Remaining Time: ", hours, "hours", minutes, "minutes");
-    }, 60000); // Update every minute
+// Function to close the modal
+function closeModal() {
+  document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
+
