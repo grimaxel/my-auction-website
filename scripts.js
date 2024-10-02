@@ -2,32 +2,37 @@
 fetch('/.netlify/functions/fetchAirtable')
   .then(response => response.json())
   .then(data => {
-    console.log("Fetched Data: ", data); // Log the entire fetched data for verification
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    // Reverse the order of records from Table 1 to display the latest first
-    const reversedRecords = data.table1.records.reverse();
+    // Reverse the order of records to display the latest first
+    const reversedRecords = data.records.reverse();
+
+    // Log the fetched data for debugging
+    console.log("Fetched data from Table 1:", reversedRecords);
 
     reversedRecords.forEach(record => {
       const post = record.fields;
-      console.log("Post Data: ", post); // Log post data to verify fields from Table 1
-
       const imgElement = document.createElement('img');
       imgElement.src = post['first image'];  // Use the first image from Airtable
       imgElement.alt = post.caption || 'Auction item';  // Use the caption or fallback text
-      imgElement.onclick = () => openModal(post, data.table2.records);  // Open modal when clicked
+      imgElement.onclick = () => openModal(post);  // Open modal when clicked
 
       gallery.appendChild(imgElement);  // Add the image to the gallery
     });
+
+    // Store all table 2 records (auction info)
+    const table2Records = data.table2Records; // Replace with how your Table 2 data is structured
+    
+    // Log the Table 2 records for debugging
+    console.log("Table 2 Records:", table2Records);
+    
+    window.table2Records = table2Records;  // Store globally for access in openModal
   })
   .catch(error => console.error('Error fetching data from Netlify function:', error));
 
-// Function to open modal with post images, caption, asking price, and auction details from Table 2
-function openModal(post, table2Records) {
-  console.log("Opening Modal for Post: ", post); // Log the post when modal is opened
-  console.log("Table 2 Records: ", table2Records); // Log Table 2 records for verification
-
+// Function to open modal with post images, caption, and asking price
+function openModal(post) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
@@ -44,21 +49,21 @@ function openModal(post, table2Records) {
   // Display the caption
   let captionText = post.caption || 'No description available';
 
-  // Match the correct row in Table 2 based on the row number or other criteria
-  const matchingRow = table2Records.find(row => row.fields['row number'] === post['row number']);
-  console.log("Matching Row from Table 2: ", matchingRow); // Log the matched row from Table 2
+  // Log the post for debugging
+  console.log("Opening Modal for Post:", post);
 
-  if (matchingRow) {
-    // Append asking price and auction details if available
-    if (matchingRow.fields['auction price']) {
-      captionText += `\n\nAsking Price: ${matchingRow.fields['auction price']}`;
-    }
-    if (matchingRow.fields['end date']) {
-      captionText += `\n\nAuction Ends: ${matchingRow.fields['end date']}`;
-    }
+  // Search for matching row in Table 2 based on row number or other identifier
+  const matchingAuctionData = window.table2Records.find(row => row.fields['row number'] === post['row number']);
+
+  // Log the matching row for debugging
+  console.log("Matching Row from Table 2:", matchingAuctionData);
+
+  // Append auction price if available
+  if (matchingAuctionData && matchingAuctionData.fields['auction price']) {
+    captionText += `\n\nAsking Price: ${matchingAuctionData.fields['auction price']}`;
   }
 
-  description.textContent = captionText;  // Add the caption, asking price, and auction details to the modal
+  description.textContent = captionText;  // Add the caption and asking price to the modal
   modal.style.display = 'block';  // Show the modal
 }
 
