@@ -2,13 +2,20 @@
 fetch('/.netlify/functions/fetchAirtable')
   .then(response => response.json())
   .then(data => {
+    // Log the fetched data for debugging
+    console.log('Fetched Data:', data);
+
+    if (!data || !data.records) {
+      throw new Error('Invalid data format received');
+    }
+
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
     // Reverse the order of records to display the latest first
     const reversedRecords = data.records.reverse();
 
-    // Log the fetched data for debugging
+    // Log the fetched data for Table 1
     console.log("Fetched data from Table 1:", reversedRecords);
 
     reversedRecords.forEach(record => {
@@ -23,10 +30,10 @@ fetch('/.netlify/functions/fetchAirtable')
 
     // Store all table 2 records (auction info)
     const table2Records = data.table2Records; // Replace with how your Table 2 data is structured
-    
+
     // Log the Table 2 records for debugging
     console.log("Table 2 Records:", table2Records);
-    
+
     window.table2Records = table2Records;  // Store globally for access in openModal
   })
   .catch(error => console.error('Error fetching data from Netlify function:', error));
