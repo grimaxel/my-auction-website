@@ -21,7 +21,7 @@ body {
 
 .gallery img {
   width: 100%;
-  height: auto;  /* Allow for natural height based on aspect ratio */
+  height: auto;  /* Maintain aspect ratio */
   cursor: pointer;
   border-radius: 8px;
   transition: transform 0.3s ease;
@@ -81,33 +81,39 @@ body {
 }
 
 .countdown-timer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
+  margin-top: 15px;
   padding: 10px;
-  background-color: #e0e0e0;
-  width: 200px;
-  margin: 10px auto;
-  border-radius: 8px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  width: fit-content;
+  font-size: 1.5em;
+  display: inline-block;
   position: relative;
 }
 
-.countdown-timer::before {
-  content: '';
+.timer-bar {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  width: 100%;
-  background-color: #ddd;
-  z-index: 1;
-  transition: width 1s linear;
-  border-radius: 8px;
+  background-color: #f0f0f0;
+  z-index: -1;
 }
 
-.countdown-timer span {
-  position: relative;
-  z-index: 2;
-  font-size: 1.5rem;
+.timer-bar-fill {
+  background-color: #b3b3b3;
+  height: 100%;
+  transition: width 0.5s ease-out;
 }
+
+/* Media query for mobile - force two columns */
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);  /* 2 columns on smaller screens */
+  }
+
+  .gallery img:nth-child(odd) {
+    transform: translateY(40%);  /* Stagger odd-numbered images */
+  }
+}
+
