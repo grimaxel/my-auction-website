@@ -2,6 +2,7 @@
 fetch('/.netlify/functions/fetchAirtable')
   .then(response => response.json())
   .then(data => {
+    console.log(data);  // Log the fetched data to verify if auction price is included
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
