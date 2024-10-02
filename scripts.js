@@ -59,5 +59,3 @@ function openModal(post, table2Records) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
-
-}
