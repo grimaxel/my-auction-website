@@ -80,15 +80,29 @@ body {
   margin-top: 20px;
 }
 
+/* Countdown timer */
 .countdown-timer {
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 40px;
+  background-color: #f0f0f0;
   border-radius: 5px;
-  width: fit-content;
-  font-size: 1.5em;
-  display: inline-block;
+  font-size: 1.2em;
+  margin-top: 10px;
   position: relative;
+  overflow: hidden;
+}
+
+.countdown-timer div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #ccc;
+  height: 100%;
+  transition: width 0.5s ease;
 }
 
 .timer-bar {
