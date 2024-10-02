@@ -5,8 +5,8 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    const table1Records = data.table1Records;
-    const table2Records = data.table2Records;
+    const table1Records = data.table1Records.reverse(); // Reverse Table 1 records
+    const table2Records = data.table2Records.reverse(); // Reverse Table 2 records
 
     // Log the fetched data for debugging
     console.log("Fetched data from Table 1:", table1Records);
@@ -60,9 +60,6 @@ function openModal(rowNumber, table2Records) {
   }
 }
 
-// Function to close the modal
-function closeModal() {
-  document.getElementById('myModal').style.display = 'none';  // Hide the modal
-}
+//
 
 
