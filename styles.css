@@ -21,7 +21,7 @@ body {
 
 .gallery img {
   width: 100%;
-  height: auto;  /* Allow for natural height based on aspect ratio */
+  height: auto;
   cursor: pointer;
   border-radius: 8px;
   transition: transform 0.3s ease;
@@ -41,7 +41,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.8);
-  overflow: auto;  /* Enable scrolling if needed */
+  overflow: auto;
 }
 
 .modal-content {
@@ -49,10 +49,10 @@ body {
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
-  width: 80%;  /* Width will be 80% of the screen */
-  max-width: 600px;  /* Maximum width for larger screens */
-  max-height: 80%;  /* Maximum height */
-  height: auto;  /* Allow height to adjust automatically */
+  width: 80%;
+  max-width: 600px;
+  max-height: 80%;
+  height: auto;
   position: relative;
 }
 
@@ -66,29 +66,29 @@ body {
 
 .modal-images {
   display: flex;
-  overflow-x: scroll;  /* Enable horizontal scrolling */
+  overflow-x: scroll;
 }
 
 .modal-images img {
   margin-right: 10px;
-  width: 100%;  /* Responsive width */
-  max-height: 400px;  /* Set a max height for images */
-  object-fit: cover;  /* Maintain aspect ratio */
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
 }
 
 .description {
   margin-top: 20px;
 }
 
-/* Responsive grid for smaller screens */
-@media (max-width: 768px) {
+/* Media Query for small screens - force two columns */
+@media screen and (max-width: 768px) {
   .gallery {
-    grid-template-columns: repeat(2, 1fr);  /* Two columns on smaller screens */
+    grid-template-columns: repeat(2, 1fr); /* Force two columns */
+  }
+
+  .gallery img {
+    width: auto;
+    max-width: 100%; /* Adjust the width of the images to fit the smaller grid */
   }
 }
 
-@media (max-width: 480px) {
-  .gallery {
-    grid-template-columns: repeat(1, 1fr);  /* Single column for very small screens */
-  }
-}
