@@ -25,24 +25,22 @@ fetch('/.netlify/functions/fetchAirtable')
   })
   .catch(error => console.error('Error fetching data from Netlify function:', error));
 
-// Function to open modal with post images, caption, auction details, and countdown timer
+// Function to open modal with post images, caption, and auction details from Table 2
 function openModal(rowNumber, table2Records) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
-  const timerDiv = document.querySelector('.countdown-timer');
+  const timerElement = modal.querySelector('.countdown-timer');
 
   modalImages.innerHTML = '';  // Clear previous images
   description.innerHTML = '';  // Clear previous description
+  timerElement.innerHTML = ''; // Clear previous countdown
 
   // Find the matching record in Table 2 by row number
   const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
 
   if (matchingRecord) {
     const post = matchingRecord.fields;
-
-    // Log the end date to check its format
-    console.log("End date from Airtable:", post['end date']);
 
     // Add all images to the modal
     ['first image', 'second image', 'third image'].forEach(field => {
@@ -53,44 +51,78 @@ function openModal(rowNumber, table2Records) {
       }
     });
 
-    // Add caption, auction price, and link to the modal
+    // Add caption, auction price, and auction URL link to the modal
     description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
                              <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
                              <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
 
-    // Try to format the end date and calculate the remaining time
-    const auctionEndDate = new Date(post['end date']);
-    const now = new Date();
-    const timeDiff = auctionEndDate - now;
+    // Extract and format the end date
+    const endDateStr = post['end date'];
+    console.log("End date from Airtable:", endDateStr);
 
-    // Log the time difference to check if the calculation is correct
-    console.log("Time difference (ms):", timeDiff);
+    // Parse the date into a Date object
+    const endDate = parseDate(endDateStr);
+    if (endDate) {
+      const currentTime = new Date();
+      const timeDiffMs = endDate - currentTime;
+      console.log("Time difference (ms):", timeDiffMs);
 
-    if (timeDiff > 0) {
-      const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-      const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
-
-      // Log remaining hours and minutes
-      console.log("Remaining time: ", hours, "h", minutes, "min");
-
-      // Update the countdown display
-      timerDiv.innerHTML = `${hours} h ${minutes} min`;
-
-      // Calculate the width of the bar as a percentage
-      const percentage = Math.max((timeDiff / totalTime) * 100, 0);
-      timerDiv.style.width = `${percentage}%`;
-
-      // Log the calculated percentage for the bar
-      console.log("Percentage of time left:", percentage);
-    } else {
-      timerDiv.innerHTML = 'Auction ended';
-      timerDiv.style.width = '0%';
+      if (timeDiffMs > 0) {
+        startCountdown(timeDiffMs, timerElement);  // Start the countdown
+      } else {
+        // If auction has ended, show 00 h 00 min and an empty bar
+        timerElement.innerHTML = '00 h 00 min';
+        updateCountdownBar(0, timerElement);  // Empty the countdown bar
+      }
     }
-
-    // Display the modal
-    modal.style.display = 'block';
   }
+
+  // Display the modal
+  modal.style.display = 'block';
+}
+
+// Parse the date string to a Date object
+function parseDate(dateStr) {
+  // Manually parse the date string (e.g., '3 okt 2024 15:49')
+  const parts = dateStr.split(' ');
+  const day = parseInt(parts[0]);
+  const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+  const month = monthNames.indexOf(parts[1].toLowerCase());
+  const year = parseInt(parts[2]);
+  const timeParts = parts[3].split(':');
+  const hour = parseInt(timeParts[0]);
+  const minute = parseInt(timeParts[1]);
+
+  if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
+    return new Date(year, month, day, hour, minute);
+  }
+  console.error('Invalid date format:', dateStr);
+  return null;
+}
+
+// Start countdown timer and update every minute
+function startCountdown(timeDiffMs, timerElement) {
+  function updateTimer() {
+    const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
+    timerElement.innerHTML = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
+
+    // Update the countdown bar
+    const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
+    updateCountdownBar(timeDiffMs / totalTime, timerElement);
+  }
+
+  updateTimer();  // Initial update
+  setInterval(updateTimer, 60 * 1000);  // Update every minute
+}
+
+// Update the countdown bar
+function updateCountdownBar(progress, timerElement) {
+  const bar = document.createElement('div');
+  bar.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
+  bar.style.height = '20px';
+  bar.style.backgroundColor = '#ccc';  // Gray color
+  timerElement.appendChild(bar);
 }
 
 // Function to close the modal
