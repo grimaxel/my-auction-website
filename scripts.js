@@ -61,7 +61,7 @@ function openModal(rowNumber, table2Records) {
     console.log("End date from Airtable:", endDateStr);
 
     // Parse the date into a Date object, and convert to correct timezone (CEST)
-    const endDate = parseDateToCEST(endDateStr);
+    const endDate = parseDateToCEST(endDateStr) + cestOffsetMs;
     if (endDate) {
       const currentTime = new Date();
       const timeDiffMs = endDate - currentTime;
@@ -96,7 +96,7 @@ function parseDateToCEST(dateStr) {
     // Create a Date object and adjust to CEST (Central European Summer Time UTC+2)
     const utcDate = new Date(Date.UTC(year, month, day, hour, minute));
     const cestOffsetMs = 2 * 60 * 60 * 1000;  // CEST is UTC+2
-    return new Date(utcDate.getTime() - cestOffsetMs);
+    return new Date(utcDate.getTime());
   }
   console.error('Invalid date format:', dateStr);
   return null;
