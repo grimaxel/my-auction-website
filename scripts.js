@@ -8,7 +8,7 @@ fetch('/.netlify/functions/fetchAirtable')
     const table1Records = data.table1Records.reverse(); // Reverse Table 1 records
     const table2Records = data.table2Records.reverse(); // Reverse Table 2 records
 
-    // Log fetched data for debugging
+    // Log the fetched data for debugging
     console.log("Fetched data from Table 1:", table1Records);
     console.log("Fetched data from Table 2:", table2Records);
 
@@ -30,11 +30,11 @@ function openModal(rowNumber, table2Records) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
-  const countdownTimer = modal.querySelector('.countdown-timer'); // Countdown timer element
+  const timerElement = modal.querySelector('.countdown-timer');
 
   modalImages.innerHTML = '';  // Clear previous images
   description.innerHTML = '';  // Clear previous description
-  countdownTimer.innerHTML = '';  // Clear previous countdown
+  timerElement.innerHTML = ''; // Clear previous countdown
 
   // Find the matching record in Table 2 by row number
   const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
@@ -56,39 +56,75 @@ function openModal(rowNumber, table2Records) {
                              <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
                              <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
 
-    // Log the end date for debugging
-    console.log("End date from Airtable:", post['end date']);
+    // Extract and format the end date
+    const endDateStr = post['end date'];
+    console.log("End date from Airtable:", endDateStr);
 
-    // Parse the end date
-    const endDate = new Date(post['end date']);
+    // Parse the date into a Date object, and convert to correct timezone (CEST)
+    const endDate = parseDateToCEST(endDateStr);
+    if (endDate) {
+      const currentTime = new Date();
+      const timeDiffMs = endDate - currentTime;
+      console.log("Time difference (ms):", timeDiffMs);
 
-    // Get current time and calculate difference
-    const currentTime = new Date();
-    const timeDifference = endDate - currentTime;
-
-    console.log("Time difference (ms):", timeDifference);
-
-    if (timeDifference > 0) {
-      // Convert time difference to hours and minutes
-      const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-
-      // Display the countdown
-      countdownTimer.innerHTML = `${hours} h ${minutes} min`;
-
-      // Adjust the countdown bar width based on time remaining
-      const maxTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds (7 days)
-      const percentage = Math.max(0, Math.min(100, (timeDifference / maxTime) * 100));
-      countdownTimer.style.background = `linear-gradient(to right, #bbb ${percentage}%, #eee ${percentage}%)`;
-    } else {
-      // Auction ended
-      countdownTimer.innerHTML = '00 h 00 min';
-      countdownTimer.style.background = 'linear-gradient(to right, #bbb 0%, #eee 100%)';
+      if (timeDiffMs > 0) {
+        startCountdown(timeDiffMs, timerElement);  // Start the countdown
+      } else {
+        // If auction has ended, show 00 h 00 min and an empty bar
+        timerElement.innerHTML = '00 h 00 min';
+        updateCountdownBar(0, timerElement);  // Empty the countdown bar
+      }
     }
-
-    // Display the modal
-    modal.style.display = 'block';
   }
+
+  // Display the modal
+  modal.style.display = 'block';
+}
+
+// Parse the date string to a Date object, considering CEST (UTC+2)
+function parseDateToCEST(dateStr) {
+  const parts = dateStr.split(' ');
+  const day = parseInt(parts[0]);
+  const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+  const month = monthNames.indexOf(parts[1].toLowerCase());
+  const year = parseInt(parts[2]);
+  const timeParts = parts[3].split(':');
+  const hour = parseInt(timeParts[0]);
+  const minute = parseInt(timeParts[1]);
+
+  if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
+    // Create a Date object and adjust to CEST (Central European Summer Time UTC+2)
+    const utcDate = new Date(Date.UTC(year, month, day, hour, minute));
+    const cestOffsetMs = 2 * 60 * 60 * 1000;  // CEST is UTC+2
+    return new Date(utcDate.getTime() + cestOffsetMs);
+  }
+  console.error('Invalid date format:', dateStr);
+  return null;
+}
+
+// Start countdown timer and update every minute
+function startCountdown(timeDiffMs, timerElement) {
+  function updateTimer() {
+    const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
+    timerElement.innerHTML = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
+
+    // Update the countdown bar
+    const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
+    updateCountdownBar(timeDiffMs / totalTime, timerElement);
+  }
+
+  updateTimer();  // Initial update
+  setInterval(updateTimer, 60 * 1000);  // Update every minute
+}
+
+// Update the countdown bar
+function updateCountdownBar(progress, timerElement) {
+  const bar = document.createElement('div');
+  bar.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
+  bar.style.height = '20px';
+  bar.style.backgroundColor = '#ccc';  // Gray color
+  timerElement.appendChild(bar);
 }
 
 // Function to close the modal
