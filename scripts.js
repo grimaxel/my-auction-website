@@ -13,15 +13,15 @@ fetch('/.netlify/functions/fetchAirtable')
       const imgElement = document.createElement('img');
       imgElement.src = post['first image'];  // Use the first image from Airtable
       imgElement.alt = post.caption || 'Auction item';  // Use the caption or fallback text
-      imgElement.onclick = () => openModal(post, record.priceData);  // Open modal when clicked
+      imgElement.onclick = () => openModal(post);  // Open modal when clicked
 
       gallery.appendChild(imgElement);  // Add the image to the gallery
     });
   })
   .catch(error => console.error('Error fetching data from Netlify function:', error));
 
-// Function to open modal with post images and caption
-function openModal(post, priceData) {
+// Function to open modal with post images, caption, and asking price
+function openModal(post) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
@@ -35,15 +35,15 @@ function openModal(post, priceData) {
     }
   });
 
-  description.textContent = post.caption || 'No description available';  // Add the caption
-
-  // Add asking price if available
-  if (priceData && priceData['auction price']) {
-    const priceElement = document.createElement('p');
-    priceElement.textContent = `Asking Price: ${priceData['auction price']}`;
-    description.appendChild(priceElement);  // Add asking price under caption
+  // Display the caption
+  let captionText = post.caption || 'No description available';
+  
+  // Append asking price if available
+  if (post['auction price']) {
+    captionText += `\n\nAsking Price: ${post['auction price']}`;
   }
 
+  description.textContent = captionText;  // Add the caption and asking price to the modal
   modal.style.display = 'block';  // Show the modal
 }
 
