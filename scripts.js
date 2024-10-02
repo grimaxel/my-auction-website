@@ -5,21 +5,25 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    // Reverse the order of records for both Table 1 and Table 2 to display the latest first
-    const reversedTable1Records = data.records.reverse();
-    const reversedTable2Records = data.table2Records.reverse(); // Reverse Table 2 as well
+    // Check if the data for both tables exists and is an array
+    if (!Array.isArray(data.table1Data.records) || !Array.isArray(data.table2Data.records)) {
+      throw new Error('Invalid data format received');
+    }
 
-    // Log the fetched data for debugging
-    console.log("Fetched data from Table 1:", reversedTable1Records);
-    console.log("Fetched data from Table 2:", reversedTable2Records);
+    // Reverse the order of records to display the latest first
+    const reversedRecords = data.table1Data.records.reverse();
+    const table2Records = data.table2Data.records.reverse();
 
-    // Loop over Table 1 to create the gallery images and modals
-    reversedTable1Records.forEach(record => {
+    // Log fetched data
+    console.log("Fetched data from Table 1:", reversedRecords);
+    console.log("Table 2 Records:", table2Records);
+
+    reversedRecords.forEach(record => {
       const post = record.fields;
       const imgElement = document.createElement('img');
       imgElement.src = post['first image'];  // Use the first image from Airtable
       imgElement.alt = post.caption || 'Auction item';  // Use the caption or fallback text
-      imgElement.onclick = () => openModal(post, reversedTable2Records);  // Pass both post and Table 2 data
+      imgElement.onclick = () => openModal(post, table2Records);  // Open modal when clicked
 
       gallery.appendChild(imgElement);  // Add the image to the gallery
     });
@@ -47,8 +51,8 @@ function openModal(post, table2Records) {
   // Log the post for debugging
   console.log("Opening Modal for Post:", post);
 
-  // Try to fetch matching row from reversed Table 2
-  const matchingAuctionData = table2Records[0]; // The first row in reversed Table 2 will match the most recent
+  // Search for matching row in Table 2 based on row number or other identifier
+  const matchingAuctionData = table2Records.find(row => row.fields['row number'] === post['row number']);
 
   // Log the matching row for debugging
   console.log("Matching Row from Table 2:", matchingAuctionData);
