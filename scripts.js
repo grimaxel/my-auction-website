@@ -5,12 +5,12 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    const table1Records = data.table1Records;
-    const table2Records = data.table2Records;
+    const table1Records = data.table1Records.reverse(); // Reverse Table 1 records
+    const table2Records = data.table2Records.reverse(); // Reverse Table 2 records
 
     // Log the fetched data for debugging
-    console.log("Fetched data from Table 1:", table1Records);
-    console.log("Fetched data from Table 2:", table2Records);
+    console.log("Fetched data from Table 1 (reversed):", table1Records);
+    console.log("Fetched data from Table 2 (reversed):", table2Records);
 
     // Display front images from Table 1
     table1Records.forEach(record => {
@@ -63,3 +63,4 @@ function openModal(rowNumber, table2Records) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
+
