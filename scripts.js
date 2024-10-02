@@ -60,6 +60,13 @@ function openModal(rowNumber, table2Records) {
   }
 }
 
-//
+// Function to close the modal
+function closeModal() {
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'none';  // Hide the modal
+}
+
+// Add event listener to close button
+document.querySelector('.close').addEventListener('click', closeModal);
 
 
