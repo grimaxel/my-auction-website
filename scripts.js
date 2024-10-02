@@ -30,10 +30,11 @@ function openModal(rowNumber, table2Records) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
-  const countdownElement = document.querySelector('.countdown-timer');
+  const countdownTimer = modal.querySelector('.countdown-timer'); // Countdown timer element
 
   modalImages.innerHTML = '';  // Clear previous images
   description.innerHTML = '';  // Clear previous description
+  countdownTimer.innerHTML = '';  // Clear previous countdown
 
   // Find the matching record in Table 2 by row number
   const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
@@ -55,35 +56,39 @@ function openModal(rowNumber, table2Records) {
                              <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
                              <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
 
-    // Handle countdown timer
-    const endDate = post['end date'];  // Fetch the end date from Airtable
-    console.log('End date from Airtable:', endDate);
-    const countdown = calculateCountdown(endDate);
-    countdownElement.innerHTML = countdown;
+    // Log the end date for debugging
+    console.log("End date from Airtable:", post['end date']);
+
+    // Parse the end date
+    const endDate = new Date(post['end date']);
+
+    // Get current time and calculate difference
+    const currentTime = new Date();
+    const timeDifference = endDate - currentTime;
+
+    console.log("Time difference (ms):", timeDifference);
+
+    if (timeDifference > 0) {
+      // Convert time difference to hours and minutes
+      const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+      // Display the countdown
+      countdownTimer.innerHTML = `${hours} h ${minutes} min`;
+
+      // Adjust the countdown bar width based on time remaining
+      const maxTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds (7 days)
+      const percentage = Math.max(0, Math.min(100, (timeDifference / maxTime) * 100));
+      countdownTimer.style.background = `linear-gradient(to right, #bbb ${percentage}%, #eee ${percentage}%)`;
+    } else {
+      // Auction ended
+      countdownTimer.innerHTML = '00 h 00 min';
+      countdownTimer.style.background = 'linear-gradient(to right, #bbb 0%, #eee 100%)';
+    }
 
     // Display the modal
     modal.style.display = 'block';
   }
-}
-
-// Function to calculate and display countdown
-function calculateCountdown(endDateString) {
-  const currentTime = new Date().getTime();
-
-  // Parse the fetched end date string (which is in CEST) and convert it to UTC
-  const endDate = new Date(endDateString + ' UTC');
-  const timeDifference = endDate - currentTime;  // Milliseconds between now and end date
-
-  console.log('Time difference (ms):', timeDifference);
-
-  if (timeDifference <= 0) {
-    return '00 h 00 min';  // Auction ended
-  }
-
-  const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-
-  return `${hours} h ${minutes} min`;
 }
 
 // Function to close the modal
