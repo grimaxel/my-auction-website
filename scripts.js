@@ -60,11 +60,11 @@ function openModal(rowNumber, table2Records) {
     const endDateStr = post['end date'];
     console.log("End date from Airtable:", endDateStr);
 
-    // Parse the date into a Date object and ADD 2 HOURS to the end date to adjust for CEST
-    const endDate = parseDateAndAdjustForCEST(endDateStr);
-    if (endDate) {
-      const currentTime = new Date();  // Use current local time
-      const timeDiffMs = endDate - currentTime;  // Calculate the difference in milliseconds
+    // Parse the date into a Date object and then convert it to UTC
+    const endDateUTC = parseDateAndConvertToUTC(endDateStr);
+    if (endDateUTC) {
+      const currentTimeUTC = new Date().toISOString();  // Current time in UTC
+      const timeDiffMs = Date.parse(endDateUTC) - Date.parse(currentTimeUTC);  // Calculate the difference in milliseconds
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
@@ -81,8 +81,8 @@ function openModal(rowNumber, table2Records) {
   modal.style.display = 'block';
 }
 
-// Parse the date string to a Date object and add 2 hours for CEST
-function parseDateAndAdjustForCEST(dateStr) {
+// Parse the date string to a Date object and convert it to UTC
+function parseDateAndConvertToUTC(dateStr) {
   const parts = dateStr.split(' ');
   const day = parseInt(parts[0]);
   const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
@@ -93,9 +93,10 @@ function parseDateAndAdjustForCEST(dateStr) {
   const minute = parseInt(timeParts[1]);
 
   if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
-    // Add 2 hours to adjust for CEST time zone
-    const endDate = new Date(year, month, day, hour + 2, minute); 
-    return endDate;
+    // Convert CEST (UTC+2) to UTC by subtracting 2 hours
+    const endDateCEST = new Date(year, month, day, hour, minute);
+    const endDateUTC = new Date(endDateCEST.getTime() - (2 * 60 * 60 * 1000));  // Convert to UTC
+    return endDateUTC.toISOString();  // Return the date in UTC format
   }
   console.error('Invalid date format:', dateStr);
   return null;
