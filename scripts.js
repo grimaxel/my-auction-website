@@ -5,65 +5,57 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    // Get Table 1 records and sort them by row number in ascending order
-    const table1Records = data.table1Records.sort((a, b) => a.fields['row number'] - b.fields['row number']);
-    
+    const table1Records = data.table1Records;
+    const table2Records = data.table2Records;
+
     // Log the fetched data for debugging
     console.log("Fetched data from Table 1:", table1Records);
+    console.log("Fetched data from Table 2:", table2Records);
 
+    // Display front images from Table 1
     table1Records.forEach(record => {
       const post = record.fields;
       const imgElement = document.createElement('img');
-      imgElement.src = post['first image'];  // Use the first image from Airtable
-      imgElement.alt = 'Auction item';  // Use the caption or fallback text
-      imgElement.onclick = () => openModal(post['row number']);  // Open modal when clicked
+      imgElement.src = post['first image'];  // Use the first image from Table 1
+      imgElement.alt = `Auction item ${post['row number']}`;  // Alt text
+      imgElement.onclick = () => openModal(post['row number'], table2Records);  // Pass row number and Table 2 records
 
       gallery.appendChild(imgElement);  // Add the image to the gallery
     });
-
-    // Store all table 2 records (auction info)
-    window.table2Records = data.table2Records;  // Store globally for access in openModal
-
-    // Log the Table 2 records for debugging
-    console.log("Table 2 Records:", window.table2Records);
   })
   .catch(error => console.error('Error fetching data from Netlify function:', error));
 
-// Function to open modal with post images, caption, and asking price
-function openModal(rowNumber) {
+// Function to open modal with post images, caption, and auction details from Table 2
+function openModal(rowNumber, table2Records) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
 
-  modalImages.innerHTML = '';  // Clear any previous images
+  modalImages.innerHTML = '';  // Clear previous images
+  description.innerHTML = '';  // Clear previous description
 
-  // Find the matching row from Table 2
-  const matchingRecord = window.table2Records.find(row => row.fields['row number'] === rowNumber);
-
-  // Log the matching row for debugging
-  console.log("Opening Modal for row number:", rowNumber, "Matching Record:", matchingRecord);
+  // Find the matching record in Table 2 by row number
+  const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
 
   if (matchingRecord) {
+    const post = matchingRecord.fields;
+
+    // Add all images to the modal
     ['first image', 'second image', 'third image'].forEach(field => {
-      if (matchingRecord.fields[field]) {
+      if (post[field]) {
         const imgElement = document.createElement('img');
-        imgElement.src = matchingRecord.fields[field];  // Add images from Airtable
+        imgElement.src = post[field];  // Add images from Table 2
         modalImages.appendChild(imgElement);
       }
     });
 
-    // Display the caption
-    let captionText = matchingRecord.fields.caption || 'No description available';
+    // Add caption, auction price, and end date to the modal
+    description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
+                             <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
+                             <strong>End Date:</strong> ${post['end date'] || 'Not available'}<br>`;
 
-    // Append auction price if available
-    if (matchingRecord.fields['auction price']) {
-      captionText += `\n\nAsking Price: ${matchingRecord.fields['auction price']}`;
-    }
-
-    description.textContent = captionText;  // Add the caption and asking price to the modal
-    modal.style.display = 'block';  // Show the modal
-  } else {
-    console.error('No matching record found in Table 2');
+    // Display the modal
+    modal.style.display = 'block';
   }
 }
 
