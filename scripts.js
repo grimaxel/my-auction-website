@@ -25,7 +25,44 @@ fetch('/.netlify/functions/fetchAirtable')
   })
   .catch(error => console.error('Error fetching data from Netlify function:', error));
 
-// Function to open modal with post images, caption, auction details, and countdown
+// Function to calculate time left based on auction end date
+function calculateTimeLeft(endDateString) {
+  // Convert endDateString to a format JS can understand (e.g. "3 okt 2024 15:49" to ISO)
+  const months = {
+    'jan': '01', 'feb': '02', 'mar': '03', 'apr': '04',
+    'maj': '05', 'jun': '06', 'jul': '07', 'aug': '08',
+    'sep': '09', 'okt': '10', 'nov': '11', 'dec': '12'
+  };
+
+  const parts = endDateString.toLowerCase().split(' ');
+  const day = parts[0];
+  const month = months[parts[1]];
+  const year = parts[2];
+  const time = parts[3];
+
+  // Create ISO date string: YYYY-MM-DDTHH:MM:SS
+  const isoString = `${year}-${month}-${day}T${time}:00`;
+
+  // Parse the end date
+  const endDate = new Date(isoString);
+
+  // Get current time
+  const now = new Date();
+
+  // Calculate the difference in time
+  const diff = endDate - now;
+
+  if (diff <= 0) {
+    return "00 h 00 min"; // Auction has ended
+  }
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+  return `${hours} h ${minutes} min`;
+}
+
+// Function to open modal with post images, caption, and auction details from Table 2
 function openModal(rowNumber, table2Records) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
@@ -49,25 +86,13 @@ function openModal(rowNumber, table2Records) {
       }
     });
 
-    // Calculate the time remaining for countdown
-    const endDate = new Date(post['end date']);
-    const now = new Date();
-    let timeLeft = endDate - now; // in milliseconds
+    // Calculate the time left for the countdown
+    const timeLeft = calculateTimeLeft(post['end date']);
 
-    let hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
-    let minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-
-    // Clamp the progress bar to be full when timeLeft is more than 168 hours
-    let maxTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
-    let timeProgress = Math.max(0, Math.min(timeLeft / maxTime, 1)); // Ratio for progress bar
-
-    // Add countdown timer and auction details to the modal
+    // Add caption, auction price, end date, and auction URL link to the modal
     description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
                              <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
-                             <div class="countdown-bar">
-                               <div class="countdown-progress" style="width: ${timeProgress * 100}%"></div>
-                               <span>${hoursLeft} h ${minutesLeft} min</span>
-                             </div><br>
+                             <div class="countdown-timer">${timeLeft}</div><br>
                              <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
 
     // Display the modal
@@ -79,4 +104,3 @@ function openModal(rowNumber, table2Records) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
-
