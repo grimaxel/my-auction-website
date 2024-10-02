@@ -5,12 +5,12 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    const table1Records = data.table1Records.reverse(); // Reverse Table 1 records
-    const table2Records = data.table2Records.reverse(); // Reverse Table 2 records
+    const table1Records = data.table1Records;
+    const table2Records = data.table2Records;
 
     // Log the fetched data for debugging
-    console.log("Fetched data from Table 1 (reversed):", table1Records);
-    console.log("Fetched data from Table 2 (reversed):", table2Records);
+    console.log("Fetched data from Table 1:", table1Records);
+    console.log("Fetched data from Table 2:", table2Records);
 
     // Display front images from Table 1
     table1Records.forEach(record => {
@@ -49,10 +49,11 @@ function openModal(rowNumber, table2Records) {
       }
     });
 
-    // Add caption, auction price, and end date to the modal
+    // Add caption, auction price, end date, and auction URL link to the modal
     description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
                              <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
-                             <strong>End Date:</strong> ${post['end date'] || 'Not available'}<br>`;
+                             <strong>End Date:</strong> ${post['end date'] || 'Not available'}<br>
+                             <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
 
     // Display the modal
     modal.style.display = 'block';
@@ -63,4 +64,5 @@ function openModal(rowNumber, table2Records) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
+
 
