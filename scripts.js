@@ -5,65 +5,58 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    // Check if the data for both tables exists and is an array
-    if (!Array.isArray(data.table1Data.records) || !Array.isArray(data.table2Data.records)) {
-      throw new Error('Invalid data format received');
-    }
+    const table1Records = data.table1Records;
+    const table2Records = data.table2Records;
 
-    // Reverse the order of records to display the latest first
-    const reversedRecords = data.table1Data.records.reverse();
-    const table2Records = data.table2Data.records.reverse();
+    // Log the fetched data for debugging
+    console.log("Fetched data from Table 1:", table1Records);
+    console.log("Fetched data from Table 2:", table2Records);
 
-    // Log fetched data
-    console.log("Fetched data from Table 1:", reversedRecords);
-    console.log("Table 2 Records:", table2Records);
-
-    reversedRecords.forEach(record => {
+    // Display front images from Table 1
+    table1Records.forEach(record => {
       const post = record.fields;
       const imgElement = document.createElement('img');
-      imgElement.src = post['first image'];  // Use the first image from Airtable
-      imgElement.alt = post.caption || 'Auction item';  // Use the caption or fallback text
-      imgElement.onclick = () => openModal(post, table2Records);  // Open modal when clicked
+      imgElement.src = post['first image'];  // Use the first image from Table 1
+      imgElement.alt = `Auction item ${post['row number']}`;  // Alt text
+      imgElement.onclick = () => openModal(post['row number'], table2Records);  // Pass row number and Table 2 records
 
       gallery.appendChild(imgElement);  // Add the image to the gallery
     });
   })
   .catch(error => console.error('Error fetching data from Netlify function:', error));
 
-// Function to open modal with post images, caption, and asking price
-function openModal(post, table2Records) {
+// Function to open modal with post images, caption, and auction details from Table 2
+function openModal(rowNumber, table2Records) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
 
-  modalImages.innerHTML = '';  // Clear any previous images
-  ['first image', 'second image', 'third image'].forEach(field => {
-    if (post[field]) {
-      const imgElement = document.createElement('img');
-      imgElement.src = post[field];  // Add images from Airtable
-      modalImages.appendChild(imgElement);
-    }
-  });
+  modalImages.innerHTML = '';  // Clear previous images
+  description.innerHTML = '';  // Clear previous description
 
-  // Display the caption
-  let captionText = post.caption || 'No description available';
+  // Find the matching record in Table 2 by row number
+  const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
 
-  // Log the post for debugging
-  console.log("Opening Modal for Post:", post);
+  if (matchingRecord) {
+    const post = matchingRecord.fields;
 
-  // Search for matching row in Table 2 based on row number or other identifier
-  const matchingAuctionData = table2Records.find(row => row.fields['row number'] === post['row number']);
+    // Add all images to the modal
+    ['first image', 'second image', 'third image'].forEach(field => {
+      if (post[field]) {
+        const imgElement = document.createElement('img');
+        imgElement.src = post[field];  // Add images from Table 2
+        modalImages.appendChild(imgElement);
+      }
+    });
 
-  // Log the matching row for debugging
-  console.log("Matching Row from Table 2:", matchingAuctionData);
+    // Add caption, auction price, and end date to the modal
+    description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
+                             <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
+                             <strong>End Date:</strong> ${post['end date'] || 'Not available'}<br>`;
 
-  // Append auction price if available
-  if (matchingAuctionData && matchingAuctionData.fields['auction price']) {
-    captionText += `\n\nAsking Price: ${matchingAuctionData.fields['auction price']}`;
+    // Display the modal
+    modal.style.display = 'block';
   }
-
-  description.textContent = captionText;  // Add the caption and asking price to the modal
-  modal.style.display = 'block';  // Show the modal
 }
 
 // Function to close the modal
