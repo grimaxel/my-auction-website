@@ -21,7 +21,7 @@ body {
 
 .gallery img {
   width: 100%;
-  height: auto;
+  height: auto;  /* Allow for natural height based on aspect ratio */
   cursor: pointer;
   border-radius: 8px;
   transition: transform 0.3s ease;
@@ -40,8 +40,8 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  overflow: auto;
+  background-color: rgba(0,0,0,0.8);
+  overflow: auto;  /* Enable scrolling if needed */
 }
 
 .modal-content {
@@ -49,10 +49,10 @@ body {
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
-  width: 80%;
-  max-width: 600px;
-  max-height: 80%;
-  height: auto;
+  width: 80%;  /* Width will be 80% of the screen */
+  max-width: 600px;  /* Maximum width for larger screens */
+  max-height: 80%;  /* Maximum height */
+  height: auto;  /* Allow height to adjust automatically */
   position: relative;
 }
 
@@ -66,50 +66,44 @@ body {
 
 .modal-images {
   display: flex;
-  overflow-x: scroll;
+  overflow-x: scroll;  /* Enable horizontal scrolling */
 }
 
 .modal-images img {
   margin-right: 10px;
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
+  width: 100%;  /* Responsive width */
+  max-height: 400px;  /* Set a max height for images */
+  object-fit: cover;  /* Maintain aspect ratio */
 }
 
 .description {
   margin-top: 20px;
 }
 
-/* Countdown Timer */
-.countdown {
-  font-size: 1.2em;
-  margin-top: 10px;
+/* Countdown timer bar */
+.countdown-bar {
+  position: relative;
+  height: 30px;
+  width: 200px;
+  background-color: #E0E0E0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Progress Bar */
-.progress-container {
-  width: 100%;
-  background-color: #f3f3f3;
-  border-radius: 5px;
-  margin-top: 10px;
+.countdown-progress {
+  height: 100%;
+  background-color: #A0A0A0;
+  border-radius: 8px;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
-.progress-bar {
-  height: 24px;
-  background-color: #4caf50;
-  border-radius: 5px;
-  transition: width 1s ease;
+.countdown-bar span {
+  position: relative;
+  z-index: 2;
+  font-size: 18px;
+  color: #333;
 }
-
-/* Responsive Grid */
-@media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .gallery img:nth-child(2n + 1) {
-    transform: translateY(40%);
-  }
-}
-
-
