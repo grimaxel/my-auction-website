@@ -30,9 +30,13 @@ function openModal(rowNumber, table2Records) {
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
+  const countdown = modal.querySelector('.countdown');
+  const progressBar = modal.querySelector('.progress-bar');
 
   modalImages.innerHTML = '';  // Clear previous images
   description.innerHTML = '';  // Clear previous description
+  countdown.innerHTML = '';  // Clear countdown timer
+  progressBar.style.width = '100%';  // Reset progress bar
 
   // Find the matching record in Table 2 by row number
   const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
@@ -49,11 +53,38 @@ function openModal(rowNumber, table2Records) {
       }
     });
 
-    // Add caption, auction price, end date, and auction URL link to the modal
+    // Add caption and auction details to the modal
     description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
-                             <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
-                             <strong>End Date:</strong> ${post['end date'] || 'Not available'}<br>
-                             <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
+                             <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>`;
+
+    // Auction End Time Logic
+    const endTime = new Date(post['end date']);  // Convert the end date to Date object
+    const currentTime = new Date();
+
+    let timeLeft = Math.max(0, endTime - currentTime);  // Time left in milliseconds
+    let totalAuctionTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds (7 days)
+    
+    if (timeLeft > totalAuctionTime) timeLeft = totalAuctionTime;
+
+    // Countdown Timer Logic
+    const updateTimer = setInterval(() => {
+      const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      
+      countdown.textContent = `${hours} h ${minutes} min`;
+
+      // Update progress bar width based on remaining time (timeLeft/totalAuctionTime)
+      const progress = Math.max(0, (timeLeft / totalAuctionTime) * 100);
+      progressBar.style.width = `${progress}%`;
+
+      if (timeLeft <= 0) {
+        clearInterval(updateTimer);  // Stop the timer when time is up
+        countdown.textContent = 'Auction Ended';
+        progressBar.style.width = '0%';
+      }
+
+      timeLeft -= 60000; // Subtract one minute in milliseconds
+    }, 60000);  // Update every minute
 
     // Display the modal
     modal.style.display = 'block';
@@ -62,11 +93,5 @@ function openModal(rowNumber, table2Records) {
 
 // Function to close the modal
 function closeModal() {
-  const modal = document.getElementById('myModal');
-  modal.style.display = 'none';  // Hide the modal
+  document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
-
-// Add event listener to close button
-document.querySelector('.close').addEventListener('click', closeModal);
-
-
