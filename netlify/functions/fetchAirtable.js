@@ -1,44 +1,41 @@
 const fetch = require('node-fetch');
 
 exports.handler = async function (event, context) {
-  const apiKey = process.env.AIRTABLE_API_KEY;  // Ensure this is set in your Netlify environment variables
-  const baseId = 'appmwUSpnRzUv06sj';  // Your Airtable Base ID
-  const table1Name = 'Table%201';  // Table 1
-  const table2Name = 'Table%202';  // Table 2
-  const viewName = 'Grid view';  // The name of your Airtable view
-
-  const urlTable1 = `https://api.airtable.com/v0/${baseId}/${table1Name}?view=${encodeURIComponent(viewName)}`;
-  const urlTable2 = `https://api.airtable.com/v0/${baseId}/${table2Name}?view=${encodeURIComponent(viewName)}`;
+  const apiKey = process.env.AIRTABLE_API_KEY;
+  const baseId = 'appmwUSpnRzUv06sj';
+  
+  const table1Url = `https://api.airtable.com/v0/${baseId}/Table%201?view=Grid%20view`;
+  const table2Url = `https://api.airtable.com/v0/${baseId}/Table%202?view=Grid%20view`;
 
   try {
-    const responseTable1 = await fetch(urlTable1, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
+    const [table1Response, table2Response] = await Promise.all([
+      fetch(table1Url, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      }),
+      fetch(table2Url, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      })
+    ]);
 
-    const responseTable2 = await fetch(urlTable2, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
-
-    if (!responseTable1.ok || !responseTable2.ok) {
+    if (!table1Response.ok || !table2Response.ok) {
       return {
-        statusCode: responseTable1.status,
-        body: `Airtable API request failed: ${responseTable1.statusText}, ${responseTable2.statusText}`,
+        statusCode: 500,
+        body: `Airtable API request failed for one of the tables: ${table1Response.statusText} or ${table2Response.statusText}`,
       };
     }
 
-    const dataTable1 = await responseTable1.json();
-    const dataTable2 = await responseTable2.json();
+    const table1Data = await table1Response.json();
+    const table2Data = await table2Response.json();
 
-    // Return combined data from both tables
     return {
       statusCode: 200,
       body: JSON.stringify({
-        table1: dataTable1,
-        table2: dataTable2,
+        table1Records: table1Data.records,
+        table2Records: table2Data.records,
       }),
     };
   } catch (error) {
@@ -48,4 +45,3 @@ exports.handler = async function (event, context) {
     };
   }
 };
-
