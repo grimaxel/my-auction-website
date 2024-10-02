@@ -61,10 +61,10 @@ function openModal(rowNumber, table2Records) {
     console.log("End date from Airtable:", endDateStr);
 
     // Parse the end date (CEST/UTC+2) and adjust for timezone difference
-    const endDateUTC = parseDateAsCEST(endDateStr);
-    if (endDateUTC) {
-      const currentTimeUTC = new Date();  // Current time in UTC
-      const timeDiffMs = endDateUTC.getTime() - currentTimeUTC.getTime();  // Calculate the difference in milliseconds
+    const endDate = parseDateAsCEST(endDateStr);
+    if (endDate) {
+      const currentTime = new Date();  // Get current time
+      const timeDiffMs = endDate.getTime() - currentTime.getTime();  // Calculate the difference in milliseconds
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
@@ -81,7 +81,7 @@ function openModal(rowNumber, table2Records) {
   modal.style.display = 'block';
 }
 
-// Parse the end date string as CEST (UTC+2) and return a Date object in UTC
+// Parse the end date string as CEST (UTC+2) and return a Date object
 function parseDateAsCEST(dateStr) {
   const parts = dateStr.split(' ');
   const day = parseInt(parts[0]);
@@ -93,9 +93,11 @@ function parseDateAsCEST(dateStr) {
   const minute = parseInt(timeParts[1]);
 
   if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
-    // Create date object in CEST (UTC+2) timezone
-    const endDateCEST = new Date(Date.UTC(year, month, day, hour - 2, minute));  // Adjust CEST to UTC
-    return endDateCEST;  // Return Date object in UTC
+    const endDate = new Date(Date.UTC(year, month, day, hour, minute));
+
+    // Adjust for the CEST (UTC+2) time zone
+    const utcOffset = 2 * 60 * 60 * 1000; // Offset for UTC+2 in milliseconds
+    return new Date(endDate.getTime() - utcOffset);
   }
   console.error('Invalid date format:', dateStr);
   return null;
@@ -130,4 +132,5 @@ function updateCountdownBar(progress, timerElement) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
+
 
