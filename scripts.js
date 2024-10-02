@@ -60,11 +60,11 @@ function openModal(rowNumber, table2Records) {
     const endDateStr = post['end date'];
     console.log("End date from Airtable:", endDateStr);
 
-    // Parse the end date (CEST/UTC+2) and adjust for timezone difference
-    const endDate = parseDateAsCEST(endDateStr);
+    // Parse the date into a Date object, and convert to correct timezone (CEST)
+    const endDate = parseDateToCEST(endDateStr);
     if (endDate) {
-      const currentTime = new Date();  // Get current time
-      const timeDiffMs = endDate.getTime() - currentTime.getTime();  // Calculate the difference in milliseconds
+      const currentTime = new Date();
+      const timeDiffMs = endDate - currentTime;
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
@@ -81,8 +81,8 @@ function openModal(rowNumber, table2Records) {
   modal.style.display = 'block';
 }
 
-// Parse the end date string as CEST (UTC+2) and return a Date object
-function parseDateAsCEST(dateStr) {
+// Parse the date string to a Date object, considering CEST (UTC+2)
+function parseDateToCEST(dateStr) {
   const parts = dateStr.split(' ');
   const day = parseInt(parts[0]);
   const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
@@ -93,11 +93,10 @@ function parseDateAsCEST(dateStr) {
   const minute = parseInt(timeParts[1]);
 
   if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
-    const endDate = new Date(Date.UTC(year, month, day, hour, minute));
-
-    // Adjust for the CEST (UTC+2) time zone
-    const utcOffset = 2 * 60 * 60 * 1000; // Offset for UTC+2 in milliseconds
-    return new Date(endDate.getTime() - utcOffset);
+    // Create a Date object and adjust to CEST (Central European Summer Time UTC+2)
+    const utcDate = new Date(Date.UTC(year, month, day, hour, minute));
+    const cestOffsetMs = 2 * 60 * 60 * 1000;  // CEST is UTC+2
+    return new Date(utcDate.getTime()
   }
   console.error('Invalid date format:', dateStr);
   return null;
@@ -132,5 +131,4 @@ function updateCountdownBar(progress, timerElement) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
-
 
