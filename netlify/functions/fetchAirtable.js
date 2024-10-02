@@ -1,14 +1,4 @@
 
-Thank you for the clarification. You're absolutely correct, and I see that we still need to retrieve data from Table 1 for your primary content. But for the auction price and end date stored in Table 2, we’ll need to fetch those values separately. Here’s the revised approach:
-
-Step 1: Update fetchairtable.js to Retrieve Data from Both Tables
-We will modify the function to retrieve data from Table 1 for the primary content and Table 2 for auction-related data like the price and end date.
-
-Here's how we can modify the function to fetch from both tables and then merge the data as needed:
-
-Updated fetchairtable.js to fetch from both tables:
-js
-Kopiera kod
 const fetch = require('node-fetch');
 
 exports.handler = async function (event, context) {
