@@ -2,6 +2,7 @@
 fetch('/.netlify/functions/fetchAirtable')
   .then(response => response.json())
   .then(data => {
+    console.log("Fetched Data: ", data); // Log the entire fetched data for verification
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
@@ -10,6 +11,8 @@ fetch('/.netlify/functions/fetchAirtable')
 
     reversedRecords.forEach(record => {
       const post = record.fields;
+      console.log("Post Data: ", post); // Log post data to verify fields from Table 1
+
       const imgElement = document.createElement('img');
       imgElement.src = post['first image'];  // Use the first image from Airtable
       imgElement.alt = post.caption || 'Auction item';  // Use the caption or fallback text
@@ -22,6 +25,9 @@ fetch('/.netlify/functions/fetchAirtable')
 
 // Function to open modal with post images, caption, asking price, and auction details from Table 2
 function openModal(post, table2Records) {
+  console.log("Opening Modal for Post: ", post); // Log the post when modal is opened
+  console.log("Table 2 Records: ", table2Records); // Log Table 2 records for verification
+
   const modal = document.getElementById('myModal');
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
@@ -40,6 +46,7 @@ function openModal(post, table2Records) {
 
   // Match the correct row in Table 2 based on the row number or other criteria
   const matchingRow = table2Records.find(row => row.fields['row number'] === post['row number']);
+  console.log("Matching Row from Table 2: ", matchingRow); // Log the matched row from Table 2
 
   if (matchingRow) {
     // Append asking price and auction details if available
