@@ -92,11 +92,11 @@ function parseDateToCEST(dateStr) {
   const hour = parseInt(timeParts[0]);
   const minute = parseInt(timeParts[1]);
 
-  if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
+ if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
     // Create a Date object and adjust to CEST (Central European Summer Time UTC+2)
     const utcDate = new Date(Date.UTC(year, month, day, hour, minute));
     const cestOffsetMs = 2 * 60 * 60 * 1000;  // CEST is UTC+2
-    return new Date(utcDate.getTime)
+    return new Date(utcDate.getTime);
   }
   console.error('Invalid date format:', dateStr);
   return null;
