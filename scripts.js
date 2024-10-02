@@ -60,11 +60,11 @@ function openModal(rowNumber, table2Records) {
     const endDateStr = post['end date'];
     console.log("End date from Airtable:", endDateStr);
 
-    // Parse the date into a Date object, and convert to correct timezone (CEST)
-    const endDate = parseDateToCEST(endDateStr);
+    // Parse the date into a Date object, and convert both the end date and current time to UTC for accurate comparison
+    const endDate = parseDateToUTC(endDateStr);
     if (endDate) {
-      const currentTime = new Date();
-      const timeDiffMs = endDate - currentTime;
+      const currentTime = new Date();  // Use current time in UTC
+      const timeDiffMs = endDate - currentTime;  // Calculate the difference in milliseconds
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
@@ -81,8 +81,9 @@ function openModal(rowNumber, table2Records) {
   modal.style.display = 'block';
 }
 
-// Parse the date string to a Date object, considering CEST (UTC+2)
-function parseDateToCEST(dateStr) {
+// Parse the date string to a UTC Date object
+function parseDateToUTC(dateStr) {
+  // Manually parse the date string (e.g., '3 okt 2024 15:49')
   const parts = dateStr.split(' ');
   const day = parseInt(parts[0]);
   const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
@@ -93,10 +94,7 @@ function parseDateToCEST(dateStr) {
   const minute = parseInt(timeParts[1]);
 
   if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
-    // Create a Date object and adjust to CEST (Central European Summer Time UTC+2)
-    const utcDate = new Date(Date.UTC(year, month, day, hour, minute));
-    const cestOffsetMs = 2 * 60 * 60 * 1000;  // CEST is UTC+2
-    return new Date(utcDate.getTime() + cestOffsetMs);
+    return new Date(Date.UTC(year, month, day, hour, minute));  // Return UTC time
   }
   console.error('Invalid date format:', dateStr);
   return null;
