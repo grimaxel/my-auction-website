@@ -21,8 +21,7 @@ body {
 
 .gallery img {
   width: 100%;
-  height: 0;  /* Initially set the height to 0 */
-  padding-bottom: 100%;  /* Create a perfect square by setting padding-bottom to 100% */
+  aspect-ratio: 1 / 1;  /* Force the image to maintain a 1:1 aspect ratio (square) */
   object-fit: cover;  /* Ensure the image covers the entire square without distortion */
   cursor: pointer;
   cursor: pointer;
