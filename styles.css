@@ -93,16 +93,30 @@ body {
   margin-top: 10px;
   position: relative;
   overflow: hidden;
-  border: 1px solid #ccc; /* Border for clarity */
 }
 
-.timer-bar-fill {
-  background-color: #6d6d6d;
-  height: 100%;
+.countdown-timer div {
   position: absolute;
   left: 0;
   top: 0;
-  width: 0%;
+  bottom: 0;
+  background-color: #ccc;
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.timer-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #b3b3b3;
+  z-index: -1;
+}
+
+.timer-bar-fill {
+  background-color: #555;
+  height: 100%;
   transition: width 0.5s ease-out;
 }
 
