@@ -125,13 +125,11 @@ function startCountdown(timeDiffMs, timerElement, timerBarFill) {
 
 // Update the countdown bar
 function updateCountdownBar(progress, timerBarFill) {
-  // Ensure progress is between 0 and 1
-  progress = Math.max(0, Math.min(progress, 1));
-  timerBarFill.style.width = `${progress * 100}%`;  // Deplete over time
+  const clampedProgress = Math.max(0, Math.min(1, progress));  // Ensure the bar doesn't overflow or underflow
+  timerBarFill.style.width = `${clampedProgress * 100}%`;  // Set width relative to the total time
 }
 
 // Function to close the modal
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
-
