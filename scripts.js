@@ -60,25 +60,20 @@ function openModal(rowNumber, table2Records) {
     const endDateStr = post['end date'];
     console.log("End date from Airtable:", endDateStr);
 
-    // Parse the date into a Date object, and ADD 4 hours from the end date to adjust for EDT to UTC
+    // Parse the date into a Date object, and REMOVE 2 hours from the end date to adjust for CEST to UTC
     const endDate = parseDateToCEST(endDateStr);
     if (endDate) {
-      const adjustedEndDate = new Date(endDate.getTime() + (4 * 60 * 60 * 1000));  // add 4 hours
+      const adjustedEndDate = new Date(endDate.getTime() - (2 * 60 * 60 * 1000));  // Subtract 2 hours
 
       const currentTime = new Date();
       const timeDiffMs = adjustedEndDate - currentTime;
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
-      // Make the countdown timer a link
-        timerElement.innerHTML = `<a href="${post['auction url']}" target="_blank" style="text-decoration: none; color: inherit;">
-                                  ${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min
-                                  </a>`;
-        startCountdown(timeDiffMs, timerElement);  // Start the countdown
+        startCountdown(timeDiffMs, timerElement, post['auction url']);  // Start the countdown with the auction URL
       } else {
-        timerElement.innerHTML = `<a href="${post['auction url']}" target="_blank" style="text-decoration: none; color: inherit;">
-                                00 h 00 min
-                              </a>`;
+        // If auction has ended, show 00 h 00 min and an empty bar
+        timerElement.innerHTML = '00 h 00 min';
         updateCountdownBar(0, timerElement);  // Empty the countdown bar
       }
     }
@@ -88,7 +83,7 @@ function openModal(rowNumber, table2Records) {
   modal.style.display = 'block';
 }
 
-// Parse the date string to a Date object, considering EDT (UTC-4)
+// Parse the date string to a Date object, considering CEST (UTC+2)
 function parseDateToCEST(dateStr) {
   const parts = dateStr.split(' ');
   const day = parseInt(parts[0]);
@@ -100,7 +95,7 @@ function parseDateToCEST(dateStr) {
   const minute = parseInt(timeParts[1]);
 
   if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
-    // Create a Date object and adjust to EDT 
+    // Create a Date object and adjust to CEST (Central European Summer Time UTC+2)
     const utcDate = new Date(Date.UTC(year, month, day, hour, minute));
     return utcDate;  // Do not apply any extra offset here
   }
@@ -109,35 +104,32 @@ function parseDateToCEST(dateStr) {
 }
 
 // Start countdown timer and update every minute
-function startCountdown(timeDiffMs, timerElement) {
-  const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
+function startCountdown(timeDiffMs, timerElement, auctionUrl) {
   function updateTimer() {
     const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
-    const countdownText = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
-    
-    timerElement.innerHTML = `
-      <div class="light-gray-bar"></div>
-      <div class="dark-gray-bar"></div>
-      <div class="timer-text">${countdownText}</div>
-    `;
+    // Wrap the entire countdown timer in a clickable link
+    timerElement.innerHTML = `<a href="${auctionUrl}" target="_blank" style="text-decoration: none; color: inherit;">
+                                <div class="timer-bar">
+                                  <div class="timer-bar-fill"></div>
+                                </div>
+                                ${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min
+                              </a>`;
 
     // Update the countdown bar
-    const progress = timeDiffMs / totalTime;
-    updateCountdownBar(progress, timerElement);
-
-    timeDiffMs -= 60 * 1000;  // Subtract one minute from the countdown
+    const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
+    updateCountdownBar(timeDiffMs / totalTime, timerElement);
   }
 
   updateTimer();  // Initial update
   setInterval(updateTimer, 60 * 1000);  // Update every minute
 }
 
-// Update the countdown bar width
+// Update the countdown bar
 function updateCountdownBar(progress, timerElement) {
-  const darkGrayBar = timerElement.querySelector('.dark-gray-bar');
-  if (darkGrayBar) {
-    darkGrayBar.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
+  const bar = timerElement.querySelector('.timer-bar-fill');
+  if (bar) {
+    bar.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
   }
 }
 
@@ -145,4 +137,3 @@ function updateCountdownBar(progress, timerElement) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
-
