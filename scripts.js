@@ -70,10 +70,15 @@ function openModal(rowNumber, table2Records) {
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
+      // Make the countdown timer a link
+        timerElement.innerHTML = `<a href="${post['auction url']}" target="_blank" style="text-decoration: none; color: inherit;">
+                                  ${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min
+                                  </a>`;
         startCountdown(timeDiffMs, timerElement);  // Start the countdown
       } else {
-        // If auction has ended, show 00 h 00 min and an empty bar
-        timerElement.innerHTML = '00 h 00 min';
+        timerElement.innerHTML = `<a href="${post['auction url']}" target="_blank" style="text-decoration: none; color: inherit;">
+                                00 h 00 min
+                              </a>`;
         updateCountdownBar(0, timerElement);  // Empty the countdown bar
       }
     }
