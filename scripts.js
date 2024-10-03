@@ -31,13 +31,14 @@ function openModal(rowNumber, table2Records) {
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
   const timerElement = modal.querySelector('.countdown-timer');
-  const timerBarFill = document.createElement('div');
+  const timerBarFill = document.createElement('div'); // Bar fill div
 
   modalImages.innerHTML = '';  // Clear previous images
   description.innerHTML = '';  // Clear previous description
   timerElement.innerHTML = ''; // Clear previous countdown
-  timerBarFill.className = 'timer-bar-fill';
-  timerElement.appendChild(timerBarFill); // Add the bar fill to the timer
+
+  timerBarFill.className = 'timer-bar-fill'; // Assign class for bar fill
+  timerElement.appendChild(timerBarFill);  // Append the bar fill div to the timer
 
   // Find the matching record in Table 2 by row number
   const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
