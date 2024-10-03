@@ -60,7 +60,7 @@ function openModal(rowNumber, table2Records) {
     const endDateStr = post['end date'];
     console.log("End date from Airtable:", endDateStr);
 
-    // Parse the date into a Date object, and ADD 4 hours to adjust for EDT to UTC
+    // Parse the date into a Date object, and ADD 4 hours from the end date to adjust for EDT to UTC
     const endDate = parseDateToCEST(endDateStr);
     if (endDate) {
       const adjustedEndDate = new Date(endDate.getTime() + (4 * 60 * 60 * 1000));  // Add 4 hours
@@ -112,10 +112,11 @@ function startCountdown(timeDiffMs, timerElement, auctionUrl) {
     const countdownText = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
     
     timerElement.innerHTML = `
-      <div class="light-gray-bar"></div>
-      <div class="dark-gray-bar"></div>
-      <div class="timer-text"><a href="${auctionUrl}" target="_blank" style="text-decoration: none; color: inherit;">
-        ${countdownText}</a></div>
+      <a href="${auctionUrl}" target="_blank" class="countdown-link">
+        <div class="light-gray-bar"></div>
+        <div class="dark-gray-bar"></div>
+        <div class="timer-text">${countdownText}</div>
+      </a>
     `;
 
     // Update the countdown bar
@@ -141,4 +142,3 @@ function updateCountdownBar(progress, timerElement) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
-
