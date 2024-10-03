@@ -52,8 +52,8 @@ function openModal(rowNumber, table2Records) {
     });
 
     // Add caption, auction price, and auction URL link to the modal
-    description.innerHTML = `<strong>Caption:</strong> ${post.caption || 'No caption available'}<br>
-                             <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br>
+    description.innerHTML = `${post.caption || 'No caption available'}<br><br>
+                             <strong>Asking Price:</strong> ${post['auction price'] || 'Not available'}<br><br>
                              <a href="${post['auction url']}" target="_blank">Link to the auction</a>`;
 
     // Extract and format the end date
