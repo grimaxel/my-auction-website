@@ -105,25 +105,34 @@ function parseDateToCEST(dateStr) {
 
 // Start countdown timer and update every minute
 function startCountdown(timeDiffMs, timerElement) {
+  const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
   function updateTimer() {
     const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
-    timerElement.innerHTML = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
+    const countdownText = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
+    
+    timerElement.innerHTML = `
+      <div class="light-gray-bar"></div>
+      <div class="dark-gray-bar"></div>
+      <div class="timer-text">${countdownText}</div>
+    `;
 
     // Update the countdown bar
-    const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
-    updateCountdownBar(timeDiffMs / totalTime, timerElement);
+    const progress = timeDiffMs / totalTime;
+    updateCountdownBar(progress, timerElement);
+
+    timeDiffMs -= 60 * 1000;  // Subtract one minute from the countdown
   }
 
   updateTimer();  // Initial update
   setInterval(updateTimer, 60 * 1000);  // Update every minute
 }
 
-// Update the countdown bar
+// Update the countdown bar width
 function updateCountdownBar(progress, timerElement) {
-  const barFill = timerElement.querySelector('.timer-bar-fill');
-  if (barFill) {
-    barFill.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
+  const darkGrayBar = timerElement.querySelector('.dark-gray-bar');
+  if (darkGrayBar) {
+    darkGrayBar.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
   }
 }
 
@@ -131,3 +140,4 @@ function updateCountdownBar(progress, timerElement) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
+
