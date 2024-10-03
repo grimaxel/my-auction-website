@@ -60,17 +60,17 @@ function openModal(rowNumber, table2Records) {
     const endDateStr = post['end date'];
     console.log("End date from Airtable:", endDateStr);
 
-    // Parse the date into a Date object, and ADD 4 hours from the end date to adjust for EDT to UTC
+    // Parse the date into a Date object, and ADD 4 hours to adjust for EDT to UTC
     const endDate = parseDateToCEST(endDateStr);
     if (endDate) {
-      const adjustedEndDate = new Date(endDate.getTime() + (4 * 60 * 60 * 1000));  // add 4 hours
+      const adjustedEndDate = new Date(endDate.getTime() + (4 * 60 * 60 * 1000));  // Add 4 hours
 
       const currentTime = new Date();
       const timeDiffMs = adjustedEndDate - currentTime;
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
-        startCountdown(timeDiffMs, timerElement);  // Start the countdown
+        startCountdown(timeDiffMs, timerElement, post['auction url']);  // Start the countdown
       } else {
         // If auction has ended, show 00 h 00 min and an empty bar
         timerElement.innerHTML = '00 h 00 min';
@@ -95,7 +95,7 @@ function parseDateToCEST(dateStr) {
   const minute = parseInt(timeParts[1]);
 
   if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
-    // Create a Date object and adjust to EDT 
+    // Create a Date object and adjust to EDT
     const utcDate = new Date(Date.UTC(year, month, day, hour, minute));
     return utcDate;  // Do not apply any extra offset here
   }
@@ -104,7 +104,7 @@ function parseDateToCEST(dateStr) {
 }
 
 // Start countdown timer and update every minute
-function startCountdown(timeDiffMs, timerElement) {
+function startCountdown(timeDiffMs, timerElement, auctionUrl) {
   const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
   function updateTimer() {
     const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
@@ -114,7 +114,8 @@ function startCountdown(timeDiffMs, timerElement) {
     timerElement.innerHTML = `
       <div class="light-gray-bar"></div>
       <div class="dark-gray-bar"></div>
-      <div class="timer-text">${countdownText}</div>
+      <div class="timer-text"><a href="${auctionUrl}" target="_blank" style="text-decoration: none; color: inherit;">
+        ${countdownText}</a></div>
     `;
 
     // Update the countdown bar
@@ -140,3 +141,4 @@ function updateCountdownBar(progress, timerElement) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
+
