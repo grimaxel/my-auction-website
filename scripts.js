@@ -111,7 +111,7 @@ function startCountdown(timeDiffMs, timerElement) {
     timerElement.innerHTML = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
 
     // Update the countdown bar
-    const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
+    const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds (7 full days)
     updateCountdownBar(timeDiffMs / totalTime, timerElement);
   }
 
@@ -121,14 +121,12 @@ function startCountdown(timeDiffMs, timerElement) {
 
 // Update the countdown bar
 function updateCountdownBar(progress, timerElement) {
-  const bar = document.createElement('div');
-  bar.className = 'timer-bar-fill';
-  bar.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
-  timerElement.appendChild(bar);
+  const bar = timerElement.querySelector('.timer-bar-fill');
+  const percentage = Math.max(Math.min(progress * 100, 100), 0);  // Clamp between 0% and 100%
+  bar.style.width = `${percentage}%`;  // Adjust bar width based on progress
 }
 
 // Function to close the modal
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
-
