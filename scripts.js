@@ -116,20 +116,5 @@ function startCountdown(timeDiffMs, timerElement) {
   }
 
   updateTimer();  // Initial update
-  setInterval(updateTimer, 60 * 1000);  // Update every minute
-}
-
-// Update the countdown bar
-function updateCountdownBar(progress, timerElement) {
-  const bar = document.createElement('div');
-  bar.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
-  bar.style.height = '20px';
-  bar.style.backgroundColor = '#ccc';  // Gray color
-  timerElement.appendChild(bar);
-}
-
-// Function to close the modal
-function closeModal() {
-  document.getElementById('myModal').style.display = 'none';  // Hide the modal
-}
+  setInterval(updateTimer
 
