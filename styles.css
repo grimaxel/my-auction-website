@@ -82,41 +82,22 @@ body {
 
 /* Countdown timer */
 .countdown-timer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 150px;
   height: 40px;
   background-color: #f0f0f0;
   border-radius: 5px;
   font-size: 1.2em;
-  margin-top: 10px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.countdown-timer div {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background-color: #ccc;
+.countdown-timer .timer-bar-fill {
   height: 100%;
-  transition: width 0.5s ease;
-}
-
-.timer-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: #f0f0f0;
-  z-index: -1;
-}
-
-.timer-bar-fill {
-  background-color: #b3b3b3;
-  height: 100%;
+  background-color: #b3b3b3;  /* Dark gray */
+  width: 0%;  /* Starting width */
   transition: width 0.5s ease-out;
 }
 
