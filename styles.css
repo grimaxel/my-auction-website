@@ -85,36 +85,38 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   width: 150px;
   height: 40px;
   background-color: #f0f0f0;
   border-radius: 5px;
   font-size: 1.2em;
   margin-top: 10px;
-  position: relative;
   overflow: hidden;
 }
 
-/* Light grey background bar */
-.timer-bar {
+.light-gray-bar {
   position: absolute;
-  top: 0;
   left: 0;
+  top: 0;
+  bottom: 0;
   width: 100%;
-  height: 100%;
-  background-color: #f0f0f0;
-  z-index: -1;
+  background-color: #e0e0e0;
 }
 
-/* Static dark grey bar, right-aligned and half-width */
-.timer-bar-static-fill {
+.dark-gray-bar {
   position: absolute;
+  right: 0;
   top: 0;
-  right: 0; /* Right-aligned */
-  width: 50%; /* Half of the light grey bar */
-  height: 100%;
-  background-color: #b3b3b3;
-  z-index: 0; /* Behind the text */
+  bottom: 0;
+  width: 50%;  /* Static 50% width for testing */
+  background-color: #999;
+}
+
+.timer-text {
+  position: relative;
+  z-index: 1;  /* Ensure text is always on top */
+  color: #333;  /* Adjust color as necessary */
 }
 
 /* Media query for mobile - force two columns */
@@ -127,5 +129,3 @@ body {
     transform: translateY(40%);  /* Stagger odd-numbered images */
   }
 }
-
-
