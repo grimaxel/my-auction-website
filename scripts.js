@@ -31,14 +31,10 @@ function openModal(rowNumber, table2Records) {
   const modalImages = modal.querySelector('.modal-images');
   const description = modal.querySelector('.description p');
   const timerElement = modal.querySelector('.countdown-timer');
-  const timerBarFill = document.createElement('div'); // Bar fill div
 
   modalImages.innerHTML = '';  // Clear previous images
   description.innerHTML = '';  // Clear previous description
   timerElement.innerHTML = ''; // Clear previous countdown
-
-  timerBarFill.className = 'timer-bar-fill'; // Assign class for bar fill
-  timerElement.appendChild(timerBarFill);  // Append the bar fill div to the timer
 
   // Find the matching record in Table 2 by row number
   const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
@@ -74,11 +70,11 @@ function openModal(rowNumber, table2Records) {
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
-        startCountdown(timeDiffMs, timerElement, timerBarFill);  // Start the countdown
+        startCountdown(timeDiffMs, timerElement);  // Start the countdown
       } else {
         // If auction has ended, show 00 h 00 min and an empty bar
         timerElement.innerHTML = '00 h 00 min';
-        updateCountdownBar(0, timerBarFill);  // Empty the countdown bar
+        updateCountdownBar(0, timerElement);  // Empty the countdown bar
       }
     }
   }
@@ -108,7 +104,7 @@ function parseDateToCEST(dateStr) {
 }
 
 // Start countdown timer and update every minute
-function startCountdown(timeDiffMs, timerElement, timerBarFill) {
+function startCountdown(timeDiffMs, timerElement) {
   function updateTimer() {
     const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
@@ -116,7 +112,7 @@ function startCountdown(timeDiffMs, timerElement, timerBarFill) {
 
     // Update the countdown bar
     const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
-    updateCountdownBar(timeDiffMs / totalTime, timerBarFill);
+    updateCountdownBar(timeDiffMs / totalTime, timerElement);
   }
 
   updateTimer();  // Initial update
@@ -124,9 +120,11 @@ function startCountdown(timeDiffMs, timerElement, timerBarFill) {
 }
 
 // Update the countdown bar
-function updateCountdownBar(progress, timerBarFill) {
-  const clampedProgress = Math.max(0, Math.min(1, progress));  // Ensure the bar doesn't overflow or underflow
-  timerBarFill.style.width = `${clampedProgress * 100}%`;  // Set width relative to the total time
+function updateCountdownBar(progress, timerElement) {
+  const barFill = timerElement.querySelector('.timer-bar-fill');
+  if (barFill) {
+    barFill.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
+  }
 }
 
 // Function to close the modal
