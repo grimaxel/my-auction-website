@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 exports.handler = async function (event, context) {
-  const apiKey = process.env.AIRTABLE_API_KEY;  // Ensure this is set in your Netlify environment variables
+  const apiKey = process.env.AIRTABLE_API_KEY;  // Ensure this is set in your Netlify environment variables 
   const baseId = 'appmwUSpnRzUv06sj';  // Your Airtable Base ID
   
   // Fetch Table 1 (for grid images)
