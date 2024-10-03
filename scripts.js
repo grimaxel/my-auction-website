@@ -111,13 +111,13 @@ function startCountdown(timeDiffMs, timerElement, auctionUrl) {
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
     const countdownText = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
     
-    timerElement.innerHTML = `
-      <a href="${auctionUrl}" target="_blank" class="countdown-link">
-        <div class="light-gray-bar"></div>
-        <div class="dark-gray-bar"></div>
-        <div class="timer-text">${countdownText}</div>
-      </a>
-    `;
+timerElement.innerHTML = `
+  <a href="${auctionUrl}" target="_blank" class="countdown-link" style="text-decoration: none;">
+    <div class="light-gray-bar"></div>
+    <div class="dark-gray-bar"></div>
+    <div class="timer-text">${countdownText}</div>
+  </a>
+`;
 
     // Update the countdown bar
     const progress = timeDiffMs / totalTime;
