@@ -85,39 +85,30 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   width: 150px;
   height: 40px;
   background-color: #f0f0f0;
   border-radius: 5px;
   font-size: 1.2em;
   margin-top: 10px;
-  position: relative;
   overflow: hidden;
 }
 
-.countdown-timer div {
+.timer-bar-fill {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  background-color: #ccc;
   height: 100%;
-  transition: width 0.5s ease;
-}
-
-.timer-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: #f0f0f0;
-  z-index: -1;
-}
-
-.timer-bar-fill {
   background-color: #b3b3b3;
-  height: 100%;
   transition: width 0.5s ease-out;
+  z-index: 0;  /* Ensure bar is behind text */
+}
+
+.countdown-timer span {
+  position: relative;
+  z-index: 1;  /* Ensure text is above the bar */
 }
 
 /* Media query for mobile - force two columns */
@@ -130,5 +121,4 @@ body {
     transform: translateY(40%);  /* Stagger odd-numbered images */
   }
 }
-
 
