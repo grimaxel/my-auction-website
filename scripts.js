@@ -70,7 +70,7 @@ function openModal(rowNumber, table2Records) {
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
-        startCountdown(timeDiffMs, timerElement, post['auction url']);  // Start the countdown with the auction URL
+        startCountdown(timeDiffMs, timerElement, post);  // Start the countdown
       } else {
         // If auction has ended, show 00 h 00 min and an empty bar
         timerElement.innerHTML = '00 h 00 min';
@@ -104,15 +104,13 @@ function parseDateToCEST(dateStr) {
 }
 
 // Start countdown timer and update every minute
-function startCountdown(timeDiffMs, timerElement, auctionUrl) {
+function startCountdown(timeDiffMs, timerElement, post) {
   function updateTimer() {
     const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
-    // Wrap the entire countdown timer in a clickable link
-    timerElement.innerHTML = `<a href="${auctionUrl}" target="_blank" style="text-decoration: none; color: inherit;">
-                                <div class="timer-bar">
-                                  <div class="timer-bar-fill"></div>
-                                </div>
+    
+    // Make the countdown timer a clickable link
+    timerElement.innerHTML = `<a href="${post['auction url']}" target="_blank" style="text-decoration: none; color: inherit;">
                                 ${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min
                               </a>`;
 
@@ -137,3 +135,4 @@ function updateCountdownBar(progress, timerElement) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
+
