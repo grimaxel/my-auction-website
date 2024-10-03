@@ -95,29 +95,26 @@ body {
   overflow: hidden;
 }
 
-.countdown-timer div {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background-color: #ccc;
-  height: 100%;
-  transition: width 0.5s ease;
-}
-
+/* Light grey background bar */
 .timer-bar {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
   height: 100%;
-  background-color: #b3b3b3;
+  background-color: #f0f0f0;
   z-index: -1;
 }
 
-.timer-bar-fill {
-  background-color: #555;
+/* Static dark grey bar, right-aligned and half-width */
+.timer-bar-static-fill {
+  position: absolute;
+  top: 0;
+  right: 0; /* Right-aligned */
+  width: 50%; /* Half of the light grey bar */
   height: 100%;
-  transition: width 0.5s ease-out;
+  background-color: #b3b3b3;
+  z-index: 0; /* Behind the text */
 }
 
 /* Media query for mobile - force two columns */
@@ -130,4 +127,5 @@ body {
     transform: translateY(40%);  /* Stagger odd-numbered images */
   }
 }
+
 
