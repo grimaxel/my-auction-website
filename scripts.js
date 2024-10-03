@@ -116,5 +116,19 @@ function startCountdown(timeDiffMs, timerElement) {
   }
 
   updateTimer();  // Initial update
-  setInterval(updateTimer
+  setInterval(updateTimer, 60 * 1000);  // Update every minute
+}
+
+// Update the countdown bar
+function updateCountdownBar(progress, timerElement) {
+  const bar = document.createElement('div');
+  bar.className = 'timer-bar-fill';
+  bar.style.width = `${Math.max(progress * 100, 0)}%`;  // Deplete over time
+  timerElement.appendChild(bar);
+}
+
+// Function to close the modal
+function closeModal() {
+  document.getElementById('myModal').style.display = 'none';  // Hide the modal
+}
 
