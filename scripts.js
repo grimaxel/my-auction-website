@@ -60,10 +60,10 @@ function openModal(rowNumber, table2Records) {
     const endDateStr = post['end date'];
     console.log("End date from Airtable:", endDateStr);
 
-    // Parse the date into a Date object, and REMOVE 2 hours from the end date to adjust for CEST to UTC
+    // Parse the date into a Date object, and ADD 5 hours from the end date to adjust for EDT to UTC
     const endDate = parseDateToCEST(endDateStr);
     if (endDate) {
-      const adjustedEndDate = new Date(endDate.getTime() - (2 * 60 * 60 * 1000));  // Subtract 2 hours
+      const adjustedEndDate = new Date(endDate.getTime() + (5 * 60 * 60 * 1000));  // add 5 hours
 
       const currentTime = new Date();
       const timeDiffMs = adjustedEndDate - currentTime;
@@ -83,7 +83,7 @@ function openModal(rowNumber, table2Records) {
   modal.style.display = 'block';
 }
 
-// Parse the date string to a Date object, considering CEST (UTC+2)
+// Parse the date string to a Date object, considering EDT (UTC-5)
 function parseDateToCEST(dateStr) {
   const parts = dateStr.split(' ');
   const day = parseInt(parts[0]);
@@ -95,7 +95,7 @@ function parseDateToCEST(dateStr) {
   const minute = parseInt(timeParts[1]);
 
   if (!isNaN(day) && month !== -1 && !isNaN(year) && !isNaN(hour) && !isNaN(minute)) {
-    // Create a Date object and adjust to CEST (Central European Summer Time UTC+2)
+    // Create a Date object and adjust to EDT 
     const utcDate = new Date(Date.UTC(year, month, day, hour, minute));
     return utcDate;  // Do not apply any extra offset here
   }
