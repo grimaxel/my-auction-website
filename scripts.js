@@ -1,4 +1,4 @@
-// Function to fetch data from Netlify Serverless Function
+  // Function to fetch data from Netlify Serverless Function
 fetch('/.netlify/functions/fetchAirtable')
   .then(response => response.json())
   .then(data => {
@@ -73,8 +73,13 @@ function openModal(rowNumber, table2Records) {
         startCountdown(timeDiffMs, timerElement, post['auction url']);  // Start the countdown
       } else {
         // If auction has ended, show 00 h 00 min and an empty bar
-        timerElement.innerHTML = '00 h 00 min';
-        updateCountdownBar(0, timerElement);  // Empty the countdown bar
+        timerElement.innerHTML = `
+            <a href="${post['auction url']}" target="_blank" style="text-decoration: none;" class="countdown-link">
+            <div class="light-gray-bar"></div>
+            <div class="dark-gray-bar" style="width: 0%;"></div>
+            <div class="timer-text">00 h 00 min</div>
+            </a>
+            `;
       }
     }
   }
