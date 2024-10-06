@@ -1,6 +1,3 @@
-// Global variable to store Table 1 data
-let table1Records = [];
-
 // Function to fetch data from Netlify Serverless Function
 fetch('/.netlify/functions/fetchAirtable')
   .then(response => response.json())
@@ -8,12 +5,8 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    table1Records = data.table1Records.reverse(); // Store and reverse Table 1 records globally
-    const table2Records = data.table2Records.reverse(); // Reverse Table 2 records
-
-    // Log the fetched data for debugging
+    const table1Records = data.table1Records.reverse(); // Reverse Table 1 records
     console.log("Fetched data from Table 1:", table1Records);
-    console.log("Fetched data from Table 2:", table2Records);
 
     // Display front images from Table 1
     table1Records.forEach(record => {
@@ -21,12 +14,26 @@ fetch('/.netlify/functions/fetchAirtable')
       const imgElement = document.createElement('img');
       imgElement.src = post['first image'];  // Use the first image from Table 1
       imgElement.alt = `Auction item ${post['row number']}`;  // Alt text
-      imgElement.onclick = () => openModal(post['row number'], table2Records);  // Pass row number and Table 2 records
+      imgElement.onclick = () => fetchTable2AndOpenModal(post['row number']);  // Fetch Table 2 for this modal on click
 
       gallery.appendChild(imgElement);  // Add the image to the gallery
     });
   })
   .catch(error => console.error('Error fetching data from Netlify function:', error));
+
+// Function to fetch Table 2 data and open the modal
+function fetchTable2AndOpenModal(rowNumber) {
+  fetch('/.netlify/functions/fetchAirtable')
+    .then(response => response.json())
+    .then(data => {
+      const table2Records = data.table2Records.reverse();
+      console.log("Fetched data from Table 2:", table2Records);
+
+      // Open the modal with specific row data
+      openModal(rowNumber, table2Records);
+    })
+    .catch(error => console.error('Error fetching Table 2 data:', error));
+}
 
 // Function to open modal with post images, caption, and auction details from Table 2
 function openModal(rowNumber, table2Records) {
@@ -94,6 +101,11 @@ function openModal(rowNumber, table2Records) {
 
   // Display the modal
   modal.style.display = 'block';
+
+  // Reset the image scroll position and arrows
+  modalImages.scrollTo({ left: 0 });
+  hideArrow('left');
+  showArrow('right');
 }
 
 // Parse the date string to a Date object, considering EDT (UTC-4)
@@ -123,7 +135,7 @@ function startCountdown(timeDiffMs, timerElement, auctionUrl) {
     const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
     const countdownText = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
-    
+
     timerElement.innerHTML = `
       <a href="${auctionUrl}" target="_blank" class="countdown-link" style="text-decoration: none;">
         <div class="light-gray-bar"></div>
@@ -188,7 +200,7 @@ function initializeImageArrows(modalImages, post) {
         }
       };
 
-      modalImages.addEventListener('scroll', function() {
+      modalImages.addEventListener('scroll', function () {
         const scrollPosition = modalImages.scrollLeft;
         const maxScroll = modalImages.scrollWidth - modalImages.clientWidth;
 
@@ -235,6 +247,12 @@ function closeModal() {
   const modal = document.getElementById('myModal');
   modal.style.display = 'none';  // Hide the modal
 
+  // Reset modal scroll and arrows when closed
+  const modalImages = modal.querySelector('.modal-images');
+  modalImages.scrollTo({ left: 0 });
+  hideArrow('left');
+  showArrow('right');
+
   // Disable further clicks/touches briefly to prevent new modals from opening
   document.body.style.pointerEvents = 'none';
   setTimeout(() => {
@@ -243,7 +261,7 @@ function closeModal() {
 }
 
 // Function to close modal when clicking outside it
-window.onclick = function(event) {
+window.onclick = function (event) {
   const modal = document.getElementById('myModal');
   if (event.target === modal) {
     closeModal();
@@ -251,10 +269,11 @@ window.onclick = function(event) {
 };
 
 // For mobile touch events as well
-window.addEventListener('touchstart', function(event) {
+window.addEventListener('touchstart', function (event) {
   const modal = document.getElementById('myModal');
   if (event.target === modal) {
     closeModal();
   }
 });
+
 
