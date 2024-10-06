@@ -81,18 +81,19 @@ function openModal(rowNumber, table2Records) {
       const timeDiffMs = adjustedEndDate - currentTime;
       console.log("Time difference (ms):", timeDiffMs);
 
-      if (timeDiffMs > 0) {
-        startCountdown(timeDiffMs, timerElement, post['auction url'], rowNumber);  // Ensure rowNumber is passed here
-      } else {
-           // If auction has ended, show 00 h 00 min and an empty bar
-        timerElement.innerHTML = `
-          <a href="${post['auction url']}" target="_blank" style="text-decoration: none;" class="countdown-link" onclick="logClick('${matchingRecord.id}')">
-            <div class="light-gray-bar"></div>
-            <div class="dark-gray-bar" style="width: 0%;"></div>
-            <div class="timer-text">00 h 00 min</div>
-          </a>
-        `;
-      }
+     if (timeDiffMs > 0) {
+  // Pass matchingRecord.id here to startCountdown
+  startCountdown(timeDiffMs, timerElement, post['auction url'], matchingRecord.id);
+} else {
+  // If auction has ended, show 00 h 00 min and an empty bar
+  timerElement.innerHTML = `
+    <a href="${post['auction url']}" target="_blank" style="text-decoration: none;" class="countdown-link" onclick="logClick('${matchingRecord.id}')">
+      <div class="light-gray-bar"></div>
+      <div class="dark-gray-bar" style="width: 0%;"></div>
+      <div class="timer-text">00 h 00 min</div>
+    </a>
+  `;
+}
     }
 
     // Initialize the first image and show arrows
@@ -129,20 +130,21 @@ function parseDateToCEST(dateStr) {
 }
 
 // Start countdown timer and update every minute
-function startCountdown(timeDiffMs, timerElement, auctionUrl, rowNumber) {
+function startCountdown(timeDiffMs, timerElement, auctionUrl, rowId) {
   const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
   function updateTimer() {
     const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
     const countdownText = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
 
-        timerElement.innerHTML = `
-          <a href="${auctionUrl}" target="_blank" class="countdown-link" style="text-decoration: none;" onclick="logClick('${matchingRecord.id}')">
-            <div class="light-gray-bar"></div>
-            <div class="dark-gray-bar"></div>
-            <div class="timer-text">${countdownText}</div>
-          </a>
-        `;
+    // Ensure that rowId is passed to logClick here
+    timerElement.innerHTML = `
+      <a href="${auctionUrl}" target="_blank" class="countdown-link" style="text-decoration: none;" onclick="logClick('${rowId}')">
+        <div class="light-gray-bar"></div>
+        <div class="dark-gray-bar"></div>
+        <div class="timer-text">${countdownText}</div>
+      </a>
+    `;
 
     // Update the countdown bar
     const progress = timeDiffMs / totalTime;
