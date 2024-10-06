@@ -20,12 +20,19 @@
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <button class="modal-arrow" id="prevArrow" onclick="prevImage()">&#8249;</button>
+      
+      <!-- Left Arrow -->
+      <div class="left-arrow" id="prevArrow" onclick="prevImage()">&#8249;</div>
+      
       <div class="modal-images"></div>
-      <button class="modal-arrow" id="nextArrow" onclick="nextImage()">&#8250;</button>
+      
+      <!-- Right Arrow -->
+      <div class="right-arrow" id="nextArrow" onclick="nextImage()">&#8250;</div>
+      
       <div class="description">
         <p></p>
       </div>
+      
       <!-- Countdown Timer Container -->
       <div class="countdown-timer">
         <div class="light-grey-bar"></div> <!-- Light grey background bar -->
