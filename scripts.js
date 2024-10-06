@@ -157,35 +157,40 @@ function initializeImageArrows(modalImages, post) {
   if (images.length > 1) {
     showArrow('right');  // Show the right arrow initially
 
-    document.querySelector('.right-arrow').onclick = () => {
-      if (currentIndex < images.length - 1) {
-        currentIndex++;
-        modalImages.scrollTo({
-          left: images[currentIndex].offsetLeft,
-          behavior: 'smooth'
-        });
+    const rightArrow = document.querySelector('.right-arrow');
+    const leftArrow = document.querySelector('.left-arrow');
+
+    if (rightArrow && leftArrow) {
+      rightArrow.onclick = () => {
+        if (currentIndex < images.length - 1) {
+          currentIndex++;
+          modalImages.scrollTo({
+            left: images[currentIndex].offsetLeft,
+            behavior: 'smooth'
+          });
+          updateArrows(currentIndex, images.length);
+        }
+      };
+
+      leftArrow.onclick = () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          modalImages.scrollTo({
+            left: images[currentIndex].offsetLeft,
+            behavior: 'smooth'
+          });
+          updateArrows(currentIndex, images.length);
+        }
+      };
+
+      modalImages.addEventListener('scroll', function() {
+        const scrollPosition = modalImages.scrollLeft;
+        const maxScroll = modalImages.scrollWidth - modalImages.clientWidth;
+
+        currentIndex = Math.round((scrollPosition / maxScroll) * (images.length - 1));
         updateArrows(currentIndex, images.length);
-      }
-    };
-
-    document.querySelector('.left-arrow').onclick = () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        modalImages.scrollTo({
-          left: images[currentIndex].offsetLeft,
-          behavior: 'smooth'
-        });
-        updateArrows(currentIndex, images.length);
-      }
-    };
-
-    modalImages.addEventListener('scroll', function() {
-      const scrollPosition = modalImages.scrollLeft;
-      const maxScroll = modalImages.scrollWidth - modalImages.clientWidth;
-
-      currentIndex = Math.round((scrollPosition / maxScroll) * (images.length - 1));
-      updateArrows(currentIndex, images.length);
-    });
+      });
+    }
   }
 }
 
@@ -247,3 +252,4 @@ window.addEventListener('touchstart', function(event) {
     closeModal();
   }
 });
+
