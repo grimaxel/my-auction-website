@@ -41,15 +41,50 @@ function openModal(rowNumber, table2Records) {
 
   if (matchingRecord) {
     const post = matchingRecord.fields;
+    const images = ['first image', 'second image', 'third image'].filter(field => post[field]);
 
-    // Add all images to the modal
-    ['first image', 'second image', 'third image'].forEach(field => {
-      if (post[field]) {
-        const imgElement = document.createElement('img');
-        imgElement.src = post[field];  // Add images from Table 2
-        modalImages.appendChild(imgElement);
-      }
-    });
+    let currentIndex = 0; // Keep track of current image index
+
+    // Function to update the modal with the correct image
+    function updateImage() {
+      modalImages.innerHTML = '';  // Clear previous image
+      const imgElement = document.createElement('img');
+      imgElement.src = post[images[currentIndex]];  // Display the current image
+      modalImages.appendChild(imgElement);
+
+      // Handle arrow visibility
+      document.querySelector('.modal-arrow.left').classList.toggle('hidden', currentIndex === 0);
+      document.querySelector('.modal-arrow.right').classList.toggle('hidden', currentIndex === images.length - 1);
+    }
+
+    // Add navigation arrows for desktop users
+    if (!document.querySelector('.modal-arrow')) {
+      const leftArrow = document.createElement('span');
+      leftArrow.classList.add('modal-arrow', 'left', 'hidden');
+      leftArrow.innerHTML = '&#10094;'; // Left arrow symbol
+      leftArrow.onclick = () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateImage();
+        }
+      };
+
+      const rightArrow = document.createElement('span');
+      rightArrow.classList.add('modal-arrow', 'right');
+      rightArrow.innerHTML = '&#10095;'; // Right arrow symbol
+      rightArrow.onclick = () => {
+        if (currentIndex < images.length - 1) {
+          currentIndex++;
+          updateImage();
+        }
+      };
+
+      modal.appendChild(leftArrow);
+      modal.appendChild(rightArrow);
+    }
+
+    // Initial image display
+    updateImage();
 
     // Add caption, auction price, and auction URL link to the modal
     description.innerHTML = `${post.caption || 'No caption available'}<br><br>
