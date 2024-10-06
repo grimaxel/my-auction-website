@@ -1,4 +1,4 @@
-  // Function to fetch data from Netlify Serverless Function
+// Function to fetch data from Netlify Serverless Function
 fetch('/.netlify/functions/fetchAirtable')
   .then(response => response.json())
   .then(data => {
@@ -35,6 +35,9 @@ function openModal(rowNumber, table2Records) {
   modalImages.innerHTML = '';  // Clear previous images
   description.innerHTML = '';  // Clear previous description
   timerElement.innerHTML = ''; // Clear previous countdown
+
+  // Disable background interaction when modal is open
+  document.body.style.pointerEvents = 'none';
 
   // Find the matching record in Table 2 by row number
   const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
@@ -116,13 +119,13 @@ function startCountdown(timeDiffMs, timerElement, auctionUrl) {
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
     const countdownText = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
     
-timerElement.innerHTML = `
-  <a href="${auctionUrl}" target="_blank" class="countdown-link" style="text-decoration: none;">
-    <div class="light-gray-bar"></div>
-    <div class="dark-gray-bar"></div>
-    <div class="timer-text">${countdownText}</div>
-  </a>
-`;
+    timerElement.innerHTML = `
+      <a href="${auctionUrl}" target="_blank" class="countdown-link" style="text-decoration: none;">
+        <div class="light-gray-bar"></div>
+        <div class="dark-gray-bar"></div>
+        <div class="timer-text">${countdownText}</div>
+      </a>
+    `;
 
     // Update the countdown bar
     const progress = timeDiffMs / totalTime;
@@ -146,6 +149,9 @@ function updateCountdownBar(progress, timerElement) {
 // Function to close the modal
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
+
+  // Re-enable background interaction
+  document.body.style.pointerEvents = 'auto';
 }
 
 // Function to close modal when clicking outside it
