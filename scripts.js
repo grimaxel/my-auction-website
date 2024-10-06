@@ -153,6 +153,8 @@ function initializeImageArrows(modalImages, post) {
   const images = modalImages.querySelectorAll('.modal-image');
   let currentIndex = 0;
 
+  hideArrow('left');  // Ensure the left arrow is hidden initially
+
   // Add arrows if more than one image
   if (images.length > 1) {
     showArrow('right');  // Show the right arrow initially
@@ -252,4 +254,3 @@ window.addEventListener('touchstart', function(event) {
     closeModal();
   }
 });
-
