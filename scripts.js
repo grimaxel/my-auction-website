@@ -41,50 +41,38 @@ function openModal(rowNumber, table2Records) {
 
   if (matchingRecord) {
     const post = matchingRecord.fields;
-    const images = ['first image', 'second image', 'third image'].filter(field => post[field]);
 
-    let currentIndex = 0; // Keep track of current image index
+    // Add all images to the modal
+    let currentImageIndex = 0;
+    const imageUrls = ['first image', 'second image', 'third image'].map(field => post[field]).filter(Boolean);
 
-    // Function to update the modal with the correct image
+    // Create function to update the displayed image
     function updateImage() {
-      modalImages.innerHTML = '';  // Clear previous image
+      modalImages.innerHTML = '';
       const imgElement = document.createElement('img');
-      imgElement.src = post[images[currentIndex]];  // Display the current image
+      imgElement.src = imageUrls[currentImageIndex];  // Display the current image
       modalImages.appendChild(imgElement);
 
-      // Handle arrow visibility
-      document.querySelector('.modal-arrow.left').classList.toggle('hidden', currentIndex === 0);
-      document.querySelector('.modal-arrow.right').classList.toggle('hidden', currentIndex === images.length - 1);
+      // Show/hide navigation arrows
+      document.getElementById('left-arrow').style.display = currentImageIndex > 0 ? 'block' : 'none';
+      document.getElementById('right-arrow').style.display = currentImageIndex < imageUrls.length - 1 ? 'block' : 'none';
     }
 
-    // Add navigation arrows for desktop users
-    if (!document.querySelector('.modal-arrow')) {
-      const leftArrow = document.createElement('span');
-      leftArrow.classList.add('modal-arrow', 'left', 'hidden');
-      leftArrow.innerHTML = '&#10094;'; // Left arrow symbol
-      leftArrow.onclick = () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateImage();
-        }
-      };
+    // Add navigation arrows
+    document.getElementById('left-arrow').onclick = () => {
+      if (currentImageIndex > 0) {
+        currentImageIndex--;
+        updateImage();
+      }
+    };
+    document.getElementById('right-arrow').onclick = () => {
+      if (currentImageIndex < imageUrls.length - 1) {
+        currentImageIndex++;
+        updateImage();
+      }
+    };
 
-      const rightArrow = document.createElement('span');
-      rightArrow.classList.add('modal-arrow', 'right');
-      rightArrow.innerHTML = '&#10095;'; // Right arrow symbol
-      rightArrow.onclick = () => {
-        if (currentIndex < images.length - 1) {
-          currentIndex++;
-          updateImage();
-        }
-      };
-
-      modal.appendChild(leftArrow);
-      modal.appendChild(rightArrow);
-    }
-
-    // Initial image display
-    updateImage();
+    updateImage();  // Initial display of the first image
 
     // Add caption, auction price, and auction URL link to the modal
     description.innerHTML = `${post.caption || 'No caption available'}<br><br>
