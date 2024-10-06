@@ -84,35 +84,6 @@ body {
   object-fit: cover;  /* Maintain aspect ratio */
 }
 
-/* Navigation arrows */
-.modal-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2em;
-  color: rgba(0, 0, 0, 0.5);
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 1;
-}
-
-.modal-arrow:hover {
-  background-color: rgba(255, 255, 255, 0.9);
-}
-
-.modal-arrow.left {
-  left: 10px;
-}
-
-.modal-arrow.right {
-  right: 10px;
-}
-
-.modal-arrow.hidden {
-  display: none;
-}
-
 .description {
   margin-top: 20px;
 }
@@ -157,6 +128,27 @@ body {
   color: #333;  /* Adjust color as necessary */
 }
 
+/* Navigation Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2em;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#left-arrow {
+  left: 10px;
+}
+
+#right-arrow {
+  right: 10px;
+}
+
 /* Media query for mobile - force two columns */
 @media (max-width: 768px) {
   .gallery {
@@ -166,11 +158,8 @@ body {
   .gallery img:nth-child(odd) {
     transform: translateY(40%);  /* Stagger odd-numbered images */
   }
-}
 
-/* For mobile/smaller screens, adjust modal image width */
-@media (max-width: 768px) {
-  .modal-images img {
-    width: 80%;  /* Only take up 80% of the available space */
+  .modal-images {
+    overflow-x: scroll;  /* Enable horizontal scrolling on mobile */
   }
 }
