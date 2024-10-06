@@ -82,7 +82,7 @@ function openModal(rowNumber, table2Records) {
       console.log("Time difference (ms):", timeDiffMs);
 
       if (timeDiffMs > 0) {
-        startCountdown(timeDiffMs, timerElement, post['auction url']);  // Start the countdown
+        startCountdown(timeDiffMs, timerElement, post['auction url'], rowNumber);  // Ensure rowNumber is passed here
       } else {
             // If auction has ended, show 00 h 00 min and an empty bar
             timerElement.innerHTML = `
@@ -129,7 +129,7 @@ function parseDateToCEST(dateStr) {
 }
 
 // Start countdown timer and update every minute
-function startCountdown(timeDiffMs, timerElement, auctionUrl) {
+function startCountdown(timeDiffMs, timerElement, auctionUrl, rowNumber) {
   const totalTime = 168 * 60 * 60 * 1000; // 168 hours in milliseconds
   function updateTimer() {
     const hours = Math.floor(timeDiffMs / (1000 * 60 * 60));
