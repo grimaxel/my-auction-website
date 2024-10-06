@@ -36,9 +36,6 @@ function openModal(rowNumber, table2Records) {
   description.innerHTML = '';  // Clear previous description
   timerElement.innerHTML = ''; // Clear previous countdown
 
-  // Disable background interaction when modal is open
-  document.body.style.pointerEvents = 'none';
-
   // Find the matching record in Table 2 by row number
   const matchingRecord = table2Records.find(record => record.fields['row number'] === rowNumber);
 
@@ -149,16 +146,12 @@ function updateCountdownBar(progress, timerElement) {
 // Function to close the modal
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
-
-  // Re-enable background interaction
-  document.body.style.pointerEvents = 'auto';
 }
 
 // Function to close modal when clicking outside it
 window.onclick = function(event) {
   const modal = document.getElementById('myModal');
   if (event.target === modal) {
-    event.stopPropagation(); // Prevent click from propagating to elements behind
     closeModal();
   }
 };
@@ -167,7 +160,6 @@ window.onclick = function(event) {
 window.addEventListener('touchstart', function(event) {
   const modal = document.getElementById('myModal');
   if (event.target === modal) {
-    event.stopPropagation(); // Prevent touch from propagating to elements behind
     closeModal();
   }
 });
