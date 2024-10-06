@@ -24,7 +24,6 @@ body {
   aspect-ratio: 1 / 1;  /* Force the image to maintain a 1:1 aspect ratio (square) */
   object-fit: cover;  /* Ensure the image covers the entire square without distortion */
   cursor: pointer;
-  cursor: pointer;
   border-radius: 8px;
   transition: transform 0.3s ease;
 }
@@ -84,6 +83,13 @@ body {
   object-fit: cover;  /* Maintain aspect ratio */
 }
 
+/* Media query for smaller screens to only show 80% of the width */
+@media (max-width: 768px) {
+  .modal-images img {
+    width: 80%;  /* Make images take up 80% of the modal width on mobile */
+  }
+}
+
 .description {
   margin-top: 20px;
 }
@@ -128,25 +134,24 @@ body {
   color: #333;  /* Adjust color as necessary */
 }
 
-/* Arrows for navigating the modal images */
-.modal-arrow {
+/* Arrows for navigating images in the modal */
+.left-arrow, .right-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 2rem;
+  padding: 10px;
+  background-color: rgba(0,0,0,0.5);
   color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: none;
+  font-size: 24px;
   cursor: pointer;
-  z-index: 10;
-  padding: 0.5rem;
+  z-index: 2;
 }
 
-#prevArrow {
+.left-arrow {
   left: 0;
 }
 
-#nextArrow {
+.right-arrow {
   right: 0;
 }
 
