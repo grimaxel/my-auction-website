@@ -147,3 +147,14 @@ function updateCountdownBar(progress, timerElement) {
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
+
+// Function to close the modal when clicking outside of it
+window.onclick = function(event) {
+  const modal = document.getElementById('myModal');
+  const modalContent = document.querySelector('.modal-content');
+  
+  // If the clicked element is not the modal content, close the modal
+  if (event.target === modal) {
+    closeModal();
+  }
+};
