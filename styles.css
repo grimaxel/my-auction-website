@@ -128,25 +128,26 @@ body {
   color: #333;  /* Adjust color as necessary */
 }
 
-/* Navigation Arrows */
-.arrow {
+/* Arrows for navigating the modal images */
+.modal-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 2em;
-  color: #fff;
+  font-size: 2rem;
+  color: white;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 0 10px;
+  border: none;
   cursor: pointer;
-  user-select: none;
+  z-index: 10;
+  padding: 0.5rem;
 }
 
-#left-arrow {
-  left: 10px;
+#prevArrow {
+  left: 0;
 }
 
-#right-arrow {
-  right: 10px;
+#nextArrow {
+  right: 0;
 }
 
 /* Media query for mobile - force two columns */
@@ -157,9 +158,5 @@ body {
 
   .gallery img:nth-child(odd) {
     transform: translateY(40%);  /* Stagger odd-numbered images */
-  }
-
-  .modal-images {
-    overflow-x: scroll;  /* Enable horizontal scrolling on mobile */
   }
 }
