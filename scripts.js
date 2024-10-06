@@ -43,36 +43,13 @@ function openModal(rowNumber, table2Records) {
     const post = matchingRecord.fields;
 
     // Add all images to the modal
-    let currentImageIndex = 0;
-    const imageUrls = ['first image', 'second image', 'third image'].map(field => post[field]).filter(Boolean);
-
-    // Create function to update the displayed image
-    function updateImage() {
-      modalImages.innerHTML = '';
-      const imgElement = document.createElement('img');
-      imgElement.src = imageUrls[currentImageIndex];  // Display the current image
-      modalImages.appendChild(imgElement);
-
-      // Show/hide navigation arrows
-      document.getElementById('left-arrow').style.display = currentImageIndex > 0 ? 'block' : 'none';
-      document.getElementById('right-arrow').style.display = currentImageIndex < imageUrls.length - 1 ? 'block' : 'none';
-    }
-
-    // Add navigation arrows
-    document.getElementById('left-arrow').onclick = () => {
-      if (currentImageIndex > 0) {
-        currentImageIndex--;
-        updateImage();
+    ['first image', 'second image', 'third image'].forEach(field => {
+      if (post[field]) {
+        const imgElement = document.createElement('img');
+        imgElement.src = post[field];  // Add images from Table 2
+        modalImages.appendChild(imgElement);
       }
-    };
-    document.getElementById('right-arrow').onclick = () => {
-      if (currentImageIndex < imageUrls.length - 1) {
-        currentImageIndex++;
-        updateImage();
-      }
-    };
-
-    updateImage();  // Initial display of the first image
+    });
 
     // Add caption, auction price, and auction URL link to the modal
     description.innerHTML = `${post.caption || 'No caption available'}<br><br>
@@ -166,11 +143,41 @@ function updateCountdownBar(progress, timerElement) {
   }
 }
 
+// Arrow navigation functionality for the modal
+function showImage(index) {
+  const images = document.querySelectorAll('.modal-images img');
+  images.forEach((img, i) => {
+    img.classList.toggle("visible", i === index);
+  });
+  currentImageIndex = index;
+  updateArrows();
+}
+
+function updateArrows() {
+  const leftArrow = document.querySelector('.left-arrow');
+  const rightArrow = document.querySelector('.right-arrow');
+
+  leftArrow.style.display = currentImageIndex === 0 ? 'none' : 'block';
+  rightArrow.style.display = currentImageIndex === modalImagesArray.length - 1 ? 'none' : 'block';
+}
+
+function navigateLeft() {
+  if (currentImageIndex > 0) {
+    showImage(currentImageIndex - 1);
+  }
+}
+
+function navigateRight() {
+  if (currentImageIndex < modalImagesArray.length - 1) {
+    showImage(currentImageIndex + 1);
+  }
+}
+
 // Function to close the modal
 function closeModal() {
   const modal = document.getElementById('myModal');
   modal.style.display = 'none';  // Hide the modal
-  
+
   // Disable further clicks/touches briefly to prevent new modals from opening
   document.body.style.pointerEvents = 'none';
   setTimeout(() => {
