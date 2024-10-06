@@ -1,3 +1,6 @@
+// Global variable to store Table 1 data
+let table1Records = [];
+
 // Function to fetch data from Netlify Serverless Function
 fetch('/.netlify/functions/fetchAirtable')
   .then(response => response.json())
@@ -5,7 +8,7 @@ fetch('/.netlify/functions/fetchAirtable')
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = ''; // Clear existing content
 
-    const table1Records = data.table1Records.reverse(); // Reverse Table 1 records
+    table1Records = data.table1Records.reverse(); // Store and reverse Table 1 records globally
     const table2Records = data.table2Records.reverse(); // Reverse Table 2 records
 
     // Log the fetched data for debugging
@@ -254,3 +257,4 @@ window.addEventListener('touchstart', function(event) {
     closeModal();
   }
 });
+
