@@ -145,12 +145,14 @@ function updateCountdownBar(progress, timerElement) {
 
 // Function to close the modal
 function closeModal() {
-  document.getElementById('myModal').style.display = 'none';  // Hide the modal
-  // Prevent click propagation
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'none';  // Hide the modal
+  
+  // Disable further clicks/touches briefly to prevent new modals from opening
+  document.body.style.pointerEvents = 'none';
   setTimeout(() => {
-    window.removeEventListener('touchstart', preventClickBehind);
-    window.removeEventListener('click', preventClickBehind);
-  }, 100);
+    document.body.style.pointerEvents = 'auto';
+  }, 300);  // Delay of 300ms before re-enabling interactions
 }
 
 // Function to close modal when clicking outside it
@@ -161,17 +163,10 @@ window.onclick = function(event) {
   }
 };
 
-// Function to prevent clicks/touch from opening elements behind the modal
-function preventClickBehind(event) {
-  event.stopPropagation();
-}
-
 // For mobile touch events as well
 window.addEventListener('touchstart', function(event) {
   const modal = document.getElementById('myModal');
   if (event.target === modal) {
     closeModal();
-    event.stopPropagation(); // Stop propagation for touch events
   }
-}, true);
-
+});
