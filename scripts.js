@@ -84,14 +84,14 @@ function openModal(rowNumber, table2Records) {
       if (timeDiffMs > 0) {
         startCountdown(timeDiffMs, timerElement, post['auction url'], rowNumber);  // Ensure rowNumber is passed here
       } else {
-            // If auction has ended, show 00 h 00 min and an empty bar
-            timerElement.innerHTML = `
-              <a href="${post['auction url']}" target="_blank" style="text-decoration: none;" class="countdown-link" onclick="logClick('${rowNumber}')">
-                <div class="light-gray-bar"></div>
-                <div class="dark-gray-bar" style="width: 0%;"></div>
-                <div class="timer-text">00 h 00 min</div>
-              </a>
-            `;
+           // If auction has ended, show 00 h 00 min and an empty bar
+        timerElement.innerHTML = `
+          <a href="${post['auction url']}" target="_blank" style="text-decoration: none;" class="countdown-link" onclick="logClick('${matchingRecord.id}')">
+            <div class="light-gray-bar"></div>
+            <div class="dark-gray-bar" style="width: 0%;"></div>
+            <div class="timer-text">00 h 00 min</div>
+          </a>
+        `;
       }
     }
 
@@ -136,13 +136,13 @@ function startCountdown(timeDiffMs, timerElement, auctionUrl, rowNumber) {
     const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
     const countdownText = `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')} min`;
 
-    timerElement.innerHTML = `
-      <a href="${auctionUrl}" target="_blank" class="countdown-link" style="text-decoration: none;" onclick="logClick('${rowNumber}')">
-        <div class="light-gray-bar"></div>
-        <div class="dark-gray-bar"></div>
-        <div class="timer-text">${countdownText}</div>
-      </a>
-    `;
+        timerElement.innerHTML = `
+          <a href="${auctionUrl}" target="_blank" class="countdown-link" style="text-decoration: none;" onclick="logClick('${matchingRecord.id}')">
+            <div class="light-gray-bar"></div>
+            <div class="dark-gray-bar"></div>
+            <div class="timer-text">${countdownText}</div>
+          </a>
+        `;
 
     // Update the countdown bar
     const progress = timeDiffMs / totalTime;
