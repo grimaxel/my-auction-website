@@ -43,10 +43,12 @@ function openModal(rowNumber, table2Records) {
     const post = matchingRecord.fields;
 
     // Add all images to the modal
-    ['first image', 'second image', 'third image'].forEach(field => {
+    ['first image', 'second image', 'third image'].forEach((field, index) => {
       if (post[field]) {
         const imgElement = document.createElement('img');
         imgElement.src = post[field];  // Add images from Table 2
+        imgElement.classList.add('modal-image');  // Add a class for targeting with arrows
+        imgElement.dataset.index = index;  // Add an index to keep track of images
         modalImages.appendChild(imgElement);
       }
     });
@@ -82,6 +84,9 @@ function openModal(rowNumber, table2Records) {
             `;
       }
     }
+
+    // Initialize the first image and show arrows
+    initializeImageArrows(modalImages, post);
   }
 
   // Display the modal
@@ -143,33 +148,75 @@ function updateCountdownBar(progress, timerElement) {
   }
 }
 
-// Arrow navigation functionality for the modal
-function showImage(index) {
-  const images = document.querySelectorAll('.modal-images img');
-  images.forEach((img, i) => {
-    img.classList.toggle("visible", i === index);
-  });
-  currentImageIndex = index;
-  updateArrows();
-}
+// Function to initialize arrow navigation
+function initializeImageArrows(modalImages, post) {
+  const images = modalImages.querySelectorAll('.modal-image');
+  let currentIndex = 0;
 
-function updateArrows() {
-  const leftArrow = document.querySelector('.left-arrow');
-  const rightArrow = document.querySelector('.right-arrow');
+  // Add arrows if more than one image
+  if (images.length > 1) {
+    showArrow('right');  // Show the right arrow initially
 
-  leftArrow.style.display = currentImageIndex === 0 ? 'none' : 'block';
-  rightArrow.style.display = currentImageIndex === modalImagesArray.length - 1 ? 'none' : 'block';
-}
+    document.querySelector('.right-arrow').onclick = () => {
+      if (currentIndex < images.length - 1) {
+        currentIndex++;
+        modalImages.scrollTo({
+          left: images[currentIndex].offsetLeft,
+          behavior: 'smooth'
+        });
+        updateArrows(currentIndex, images.length);
+      }
+    };
 
-function navigateLeft() {
-  if (currentImageIndex > 0) {
-    showImage(currentImageIndex - 1);
+    document.querySelector('.left-arrow').onclick = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        modalImages.scrollTo({
+          left: images[currentIndex].offsetLeft,
+          behavior: 'smooth'
+        });
+        updateArrows(currentIndex, images.length);
+      }
+    };
+
+    modalImages.addEventListener('scroll', function() {
+      const scrollPosition = modalImages.scrollLeft;
+      const maxScroll = modalImages.scrollWidth - modalImages.clientWidth;
+
+      currentIndex = Math.round((scrollPosition / maxScroll) * (images.length - 1));
+      updateArrows(currentIndex, images.length);
+    });
   }
 }
 
-function navigateRight() {
-  if (currentImageIndex < modalImagesArray.length - 1) {
-    showImage(currentImageIndex + 1);
+// Function to show or hide arrows
+function updateArrows(currentIndex, totalImages) {
+  if (currentIndex === 0) {
+    hideArrow('left');
+  } else {
+    showArrow('left');
+  }
+
+  if (currentIndex === totalImages - 1) {
+    hideArrow('right');
+  } else {
+    showArrow('right');
+  }
+}
+
+// Show arrow by class
+function showArrow(direction) {
+  const arrow = document.querySelector(`.${direction}-arrow`);
+  if (arrow) {
+    arrow.style.display = 'block';
+  }
+}
+
+// Hide arrow by class
+function hideArrow(direction) {
+  const arrow = document.querySelector(`.${direction}-arrow`);
+  if (arrow) {
+    arrow.style.display = 'none';
   }
 }
 
