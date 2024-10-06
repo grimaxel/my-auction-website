@@ -84,6 +84,35 @@ body {
   object-fit: cover;  /* Maintain aspect ratio */
 }
 
+/* Navigation arrows */
+.modal-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2em;
+  color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.modal-arrow:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.modal-arrow.left {
+  left: 10px;
+}
+
+.modal-arrow.right {
+  right: 10px;
+}
+
+.modal-arrow.hidden {
+  display: none;
+}
+
 .description {
   margin-top: 20px;
 }
