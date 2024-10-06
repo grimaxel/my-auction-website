@@ -148,13 +148,17 @@ function closeModal() {
   document.getElementById('myModal').style.display = 'none';  // Hide the modal
 }
 
-// Function to close the modal when clicking outside of it
-window.onclick = function(event) {
+// Function to close the modal when clicking or tapping outside of it
+function handleOutsideClick(event) {
   const modal = document.getElementById('myModal');
   const modalContent = document.querySelector('.modal-content');
   
-  // If the clicked element is not the modal content, close the modal
+  // If the clicked/tapped element is not the modal content, close the modal
   if (event.target === modal) {
     closeModal();
   }
-};
+}
+
+// Add event listeners for both mouse and touch interactions
+window.addEventListener('click', handleOutsideClick);
+window.addEventListener('touchstart', handleOutsideClick);
