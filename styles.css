@@ -186,22 +186,24 @@ body {
         top: 0;
         bottom: 0;
         width: 5px; /* Width of the border */
+        z-index: 2; /* Ensure borders are above the background */
     }
 
     .wrapper::before {
-        left: -10px; /* Slight offset to the left */
-        background-color: #b0b0b0; /* Left border color */
+        left: 0; /* Align directly to the left of the wrapper */
+        background-color: #7a7a7a; /* Left border color */
     }
 
     .wrapper::after {
-        right: -10px; /* Slight offset to the right */
-        background-color: #bfbdbc; /* Right border color */
+        right: 0; /* Align directly to the right of the wrapper */
+        background-color: #ebebe9; /* Right border color */
     }
 }
 
 /* Background for the whole page */
 body {
-    background: radial-gradient(circle at bottom left, #43413f, #aeacaa);
+    background-color: #676664; /* Dark grey background for mobile */
+    background: radial-gradient(circle at bottom left, #43413f, #aeacaa); /* Gradient for desktop */
     margin: 0;
     font-family: Arial, sans-serif;
 }
@@ -351,5 +353,10 @@ body {
     .signup-form button {
         width: 100%;
     }
+
+    body {
+        background-color: #676664; /* Static dark grey for mobile */
+    }
 }
+
 
