@@ -202,10 +202,10 @@ body {
 }
 
 .image-section .main-image img {
-    max-width: 100%;
+    max-width: 90%; /* Adjusted size to fit thumbnails */
     height: auto;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px; /* Reduced margin */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -213,11 +213,13 @@ body {
     display: flex;
     justify-content: center;
     gap: 10px;
+    margin-top: 10px; /* Add space between main image and thumbnails */
+    flex-wrap: wrap; /* Allow thumbnails to wrap if needed */
 }
 
 .thumbnail-gallery img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     object-fit: cover;
     border-radius: 5px;
     cursor: pointer;
@@ -268,5 +270,22 @@ body {
 
 .signup-form button:hover {
     background-color: #0056b3;
+}
+
+/* Media Query for Mobile View */
+@media (max-width: 768px) {
+    .product-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center;
+    }
+
+    .text-section {
+        text-align: center; /* Center-align text for better readability */
+        margin-top: 20px;
+    }
+
+    .image-section .main-image img {
+        max-width: 100%; /* Allow image to scale fully on smaller screens */
+    }
 }
 
