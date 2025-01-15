@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Product</title>
+    <title>Product Page</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,26 +12,18 @@
         <p>The auction isn't live yet, but you can be the first to know.</p>
     </header>
 
-    <main>
-        <section class="product-intro">
-            <h2>About the Product</h2>
-            <p>Welcome to the future of design. Our product blends elegance, functionality, and innovation to bring you something truly unique.</p>
-            <img src="your-product-image.jpg" alt="Product Image">
+    <main class="product-container">
+        <section class="image-section">
+            <div class="main-image">
+                <img id="mainImage" src="" alt="Main Product Image">
+            </div>
+            <div class="thumbnail-gallery" id="thumbnailGallery"></div>
         </section>
 
-        <section class="product-details">
-            <h2>Features</h2>
-            <ul>
-                <li>Feature 1: Stunning design</li>
-                <li>Feature 2: Premium materials</li>
-                <li>Feature 3: Thoughtful functionality</li>
-            </ul>
-        </section>
-
-        <section class="signup">
-            <h2>Stay Updated</h2>
-            <p>Sign up to learn more and stay updated on availability.</p>
-            <form action="#" method="POST">
+        <section class="text-section">
+            <h2>The auction isn't live yet, but you can be the first to know.</h2>
+            <p id="description"></p>
+            <form action="#" method="POST" class="signup-form">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
                 <button type="submit">Sign Up</button>
@@ -40,7 +32,9 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 Your Website Name. All rights reserved.</p>
+        <p>&copy; 2025 Auctionaisle. All rights reserved.</p>
     </footer>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
