@@ -165,13 +165,6 @@ body {
     transform: translateY(40%);  /* Stagger odd-numbered images */
   }
 }
-/* Target only the mirg page */
-body.mirg-page {
-    background: radial-gradient(circle at bottom left, #3e3c3b, #5f5d5b); /* Gradient for mirg page */
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
 /* Wrapper for the whole content */
 body.mirg-page .wrapper {
     max-width: 1100px;
@@ -182,7 +175,7 @@ body.mirg-page .wrapper {
     color: #333;
     box-sizing: border-box;
     position: relative;
-    border-radius: 10px; /* Add a subtle rounding */
+    border-radius: 0; /* Remove rounded corners */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
@@ -207,6 +200,13 @@ body.mirg-page .wrapper {
         right: 0; /* Align directly to the right of the wrapper */
         background-color: #ebebe9; /* Right border color */
     }
+}
+
+/* Background for the whole page */
+body.mirg-page {
+    background: radial-gradient(circle at bottom left, #3e3c3b, #5f5d5b); /* Gradient for mirg page */
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 /* Header styles */
@@ -349,6 +349,28 @@ body.mirg-page .signup-form button {
 body.mirg-page .signup-form button:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    body.mirg-page .product-container {
+        flex-direction: column; /* Stack image and text vertically */
+        gap: 20px;
+    }
+
+    body.mirg-page .text-section {
+        text-align: center; /* Center-align text on mobile */
+        padding-right: 0; /* Remove padding */
+    }
+
+    body.mirg-page .signup-form input[type="email"],
+    body.mirg-page .signup-form button {
+        width: 100%;
+    }
+
+    body.mirg-page {
+        background-color: #676664; /* Static dark grey for mobile */
+    }
 }
 
 
