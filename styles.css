@@ -185,7 +185,7 @@ body {
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 5px; /* Width of the border */
+        width: 2px; /* Width of the border */
         z-index: 2; /* Ensure borders are above the background */
     }
 
