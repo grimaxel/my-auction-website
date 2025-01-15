@@ -166,71 +166,92 @@ body {
   }
 }
 /* Styling for mirg.html */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* White page background */
+}
+
+/* Main container wrapper for centering */
+.product-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f7f5f2; /* Light grayish beige background for the wrapper */
+}
+
+/* Main box */
+.product-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* Header styling */
 .mirg-header {
     text-align: center;
-    margin: 40px auto;
-    color: #333;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 .mirg-header h1 {
-    font-size: 3em;
-    font-family: 'Georgia', serif; /* Elegant serif font */
+    font-size: 2.5em;
     font-weight: bold;
+    color: #222;
     margin: 0;
-    color: #111; /* Darker text for a modern look */
 }
 
 .mirg-header p {
     font-size: 1.2em;
-    font-family: 'Arial', sans-serif; /* Clean sans-serif font */
-    margin-top: 10px;
-    color: #555; /* Subtle gray for secondary text */
+    color: #666;
+    margin: 5px 0 0;
 }
 
-.product-container {
+/* Content container */
+.product-container-content {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 40px;
-    margin: 40px auto;
-    max-width: 1200px;
-    padding: 20px;
-    background-color: #f8f9fa; /* Subtle light gray box */
-    border-radius: 20px; /* Modern rounded corners */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .product-container-content {
+        flex-direction: row;
+    }
 }
 
 /* Image Section */
 .image-section {
-    flex: 3;
+    flex: 2;
     text-align: center;
 }
 
 .image-section .main-image img {
     max-width: 100%;
     height: auto;
-    border-radius: 15px; /* Softer rounded corners for images */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .thumbnail-gallery {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 10px;
-    flex-wrap: wrap; /* Allow wrapping if needed */
+    flex-wrap: wrap;
     position: sticky;
     bottom: 0;
-    z-index: 10;
-    background: rgba(248, 249, 250, 0.95); /* Slight translucent background */
-    padding: 10px;
-    border-radius: 10px; /* Match overall rounded style */
 }
 
 .thumbnail-gallery img {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
     border-radius: 5px;
     cursor: pointer;
@@ -239,64 +260,55 @@ body {
 }
 
 .thumbnail-gallery img:hover {
-    border-color: #007BFF; /* Highlight color for hover */
+    border-color: #007BFF;
 }
 
 /* Text Section */
 .text-section {
     flex: 1;
     text-align: left;
-    font-family: 'Arial', sans-serif;
 }
 
 .text-section h2 {
-    font-size: 2em;
-    font-family: 'Georgia', serif; /* Serif font for the title */
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #222;
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #333;
 }
 
 .text-section p {
     font-size: 1.1em;
     margin-bottom: 20px;
-    color: #444;
-    line-height: 1.6; /* Improved readability */
+    color: #555;
 }
 
-/* Signup Form */
+/* Sign-up form */
 .signup-form {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
 }
 
 .signup-form input[type="email"] {
-    padding: 15px;
+    padding: 10px;
     font-size: 1em;
     width: 100%;
     max-width: 300px;
-    border: 2px solid #ddd;
-    border-radius: 25px; /* Strongly rounded corners */
-    margin-bottom: 10px;
-    font-family: 'Arial', sans-serif;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle inset shadow for depth */
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.signup-form input[type="email"]:focus {
-    border-color: #007BFF;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue focus effect */
-    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .signup-form button {
-    padding: 15px 30px;
+    padding: 10px;
     font-size: 1em;
+    width: 100%;
+    max-width: 300px;
     background-color: #007BFF;
-    color: #fff;
+    color: white;
     border: none;
-    border-radius: 25px; /* Match input's rounded corners */
+    border-radius: 25px;
     cursor: pointer;
-    font-family: 'Arial', sans-serif;
     transition: background-color 0.3s;
 }
 
@@ -304,32 +316,4 @@ body {
     background-color: #0056b3;
 }
 
-/* Mobile-specific adjustments */
-@media (max-width: 768px) {
-    .product-container {
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px 10px;
-    }
-
-    .image-section {
-        text-align: center;
-    }
-
-    .thumbnail-gallery {
-        position: static;
-        margin-top: 10px;
-        padding: 0;
-        background: none;
-    }
-
-    .text-section {
-        text-align: center;
-    }
-
-    .signup-form input[type="email"],
-    .signup-form button {
-        width: 100%; /* Full width for mobile */
-    }
-}
 
