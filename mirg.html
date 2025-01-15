@@ -7,38 +7,37 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Main Box Wrapper -->
-    <div class="product-container-wrapper">
-        <div class="product-container">
-            <header class="mirg-header">
-                <h1>You're early.</h1>
-                <p>The auction isn't live yet, but you can be the first to know.</p>
-            </header>
+    <div class="wrapper">
+        <header class="mirg-header">
+            <h1>You're early.</h1>
+            <p>The auction isn't live yet, but you can be the first to know.</p>
+        </header>
 
-            <div class="product-container-content">
-                <section class="image-section">
-                    <div class="main-image">
-                        <img id="mainImage" src="" alt="Main Product Image">
-                    </div>
-                    <div class="thumbnail-gallery" id="thumbnailGallery"></div>
-                </section>
+        <main class="product-container">
+            <section class="image-section">
+                <div class="main-image">
+                    <img id="mainImage" src="" alt="Main Product Image">
+                </div>
+                <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+            </section>
 
-                <section class="text-section">
-                    <h2>The auction isn't live yet, but you can be the first to know.</h2>
-                    <p id="description"></p>
-                    <form action="#" method="POST" class="signup-form">
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                        <button type="submit">Sign Up</button>
-                    </form>
-                </section>
-            </div>
-        </div>
+            <section class="text-section">
+                <h2>The auction isn't live yet, but you can be the first to know.</h2>
+                <p id="description"></p>
+                <form action="#" method="POST" class="signup-form">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+            </section>
+        </main>
     </div>
 
     <footer>
         <p>&copy; 2025 Auctionaisle. All rights reserved.</p>
     </footer>
 
-    <script src="scripts.js"></script>
+    <!-- Include mirg.js for fetching the data -->
+    <script src="mirg.js"></script>
 </body>
 </html>
