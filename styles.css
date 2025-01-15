@@ -169,41 +169,19 @@ body {
 .wrapper {
     max-width: 1200px;
     margin: 0 auto; /* Center horizontally */
-    padding: 20px;
-    background-color: #cfcdc9; /* Subtle grey-beige similar to the mockup */
+    padding: 40px;
+    background-color: #d6d4cf; /* Updated subtle grey-beige similar to the mockup */
     font-family: 'Georgia', 'Times New Roman', serif; /* Serif font for text */
     color: #333;
     box-sizing: border-box;
-    position: relative; /* Needed for pseudo-elements */
-}
-
-/* Borders for left and right sides (only on desktop) */
-@media (min-width: 768px) {
-    .wrapper::before,
-    .wrapper::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 2px; /* Width of the border */
-        z-index: 2; /* Ensure borders are above the background */
-    }
-
-    .wrapper::before {
-        left: 0; /* Align directly to the left of the wrapper */
-        background-color: #7a7a7a; /* Left border color */
-    }
-
-    .wrapper::after {
-        right: 0; /* Align directly to the right of the wrapper */
-        background-color: #ebebe9; /* Right border color */
-    }
+    position: relative;
+    border-left: 2px solid #7a7a7a; /* Left border color */
+    border-right: 2px solid #ebebe9; /* Right border color */
 }
 
 /* Background for the whole page */
 body {
-    background-color: #676664; /* Dark grey background for mobile */
-    background: radial-gradient(circle at bottom left, #43413f, #aeacaa); /* Gradient for desktop */
+    background: radial-gradient(circle at bottom left, #4b4947, #8f8d8a); /* Gradient for desktop */
     margin: 0;
     font-family: Arial, sans-serif;
 }
@@ -211,11 +189,11 @@ body {
 /* Header styles */
 .mirg-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .mirg-header h1 {
-    font-size: 3em;
+    font-size: 3.2em;
     font-weight: bold;
     margin: 0;
     color: #222;
@@ -223,7 +201,7 @@ body {
 }
 
 .mirg-header p {
-    font-size: 1.2em;
+    font-size: 1.4em;
     margin-top: 10px;
     color: #666;
     font-family: Arial, sans-serif; /* Sans-serif for subtitle */
@@ -233,7 +211,7 @@ body {
 .product-container {
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    gap: 60px;
     justify-content: space-between;
     align-items: flex-start;
 }
@@ -250,7 +228,8 @@ body {
     height: auto;
     display: block;
     margin: 0 auto;
-    border: none; /* Remove any border effects */
+    background: linear-gradient(to bottom, #eaeaea, #f5f5f5); /* Subtle gradient behind the product */
+    border-radius: 5px; /* Slight rounding for better aesthetic */
 }
 
 /* Sticky thumbnails */
@@ -272,19 +251,20 @@ body {
     object-fit: cover;
     border-radius: 5px;
     cursor: pointer;
-    border: 1px solid transparent; /* Remove border effects */
-    transition: border-color 0.3s;
+    border: 1px solid #ccc;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .thumbnail-gallery img:hover {
-    border-color: #007BFF;
+    transform: scale(1.1); /* Slight zoom on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for better interactivity */
 }
 
 /* Text Section */
 .text-section {
     flex: 2; /* Smaller space for text */
     text-align: left;
-    padding-right: 20px; /* Add space to the right */
+    padding-right: 40px; /* Add space to the right */
     font-family: Arial, sans-serif; /* Sans-serif for body text */
 }
 
@@ -321,6 +301,12 @@ body {
     color: #333;
 }
 
+.signup-form input[type="email"]:hover,
+.signup-form input[type="email"]:focus {
+    border-color: #007BFF; /* Highlight input on focus */
+    outline: none;
+}
+
 .signup-form button {
     padding: 12px 15px;
     font-size: 1em;
@@ -330,11 +316,12 @@ body {
     border-radius: 25px; /* Rounded corners */
     cursor: pointer;
     width: 100%; /* Match the input's width */
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .signup-form button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px); /* Slight lift on hover */
 }
 
 /* Mobile Styles */
@@ -355,8 +342,7 @@ body {
     }
 
     body {
-        background-color: #676664; /* Static dark grey for mobile */
+        background-color: #4b4947; /* Static dark grey for mobile */
     }
 }
-
 
