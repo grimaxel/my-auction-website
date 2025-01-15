@@ -173,16 +173,18 @@ body {
 }
 
 .mirg-header h1 {
-    font-size: 2.5em;
+    font-size: 3em;
+    font-family: 'Georgia', serif; /* Elegant serif font */
     font-weight: bold;
     margin: 0;
-    color: #222;
+    color: #111; /* Darker text for a modern look */
 }
 
 .mirg-header p {
     font-size: 1.2em;
+    font-family: 'Arial', sans-serif; /* Clean sans-serif font */
     margin-top: 10px;
-    color: #666;
+    color: #555; /* Subtle gray for secondary text */
 }
 
 .product-container {
@@ -192,7 +194,10 @@ body {
     gap: 40px;
     margin: 40px auto;
     max-width: 1200px;
-    padding: 0 20px;
+    padding: 20px;
+    background-color: #f8f9fa; /* Subtle light gray box */
+    border-radius: 20px; /* Modern rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
 /* Image Section */
@@ -204,24 +209,23 @@ body {
 .image-section .main-image img {
     max-width: 100%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 15px; /* Softer rounded corners for images */
     margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-/* Thumbnail Gallery */
 .thumbnail-gallery {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 10px; /* Space between main image and thumbnails */
-    flex-wrap: wrap; /* Allow wrapping if necessary */
-    position: sticky; /* Make it stick to the viewport */
-    bottom: 0; /* Stick to the bottom of the viewport */
-    z-index: 10; /* Ensure it overlays the main image */
-    background: rgba(255, 255, 255, 0.8); /* Optional: Add slight background for better visibility */
-    padding: 10px; /* Optional: Add padding to avoid overlap */
-    border-radius: 5px; /* Optional: Add slight rounded edges */
+    margin-top: 10px;
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    background: rgba(248, 249, 250, 0.95); /* Slight translucent background */
+    padding: 10px;
+    border-radius: 10px; /* Match overall rounded style */
 }
 
 .thumbnail-gallery img {
@@ -235,44 +239,65 @@ body {
 }
 
 .thumbnail-gallery img:hover {
-    border-color: #007BFF;
+    border-color: #007BFF; /* Highlight color for hover */
 }
 
 /* Text Section */
 .text-section {
     flex: 1;
     text-align: left;
+    font-family: 'Arial', sans-serif;
 }
 
 .text-section h2 {
-    font-size: 1.8em;
-    margin-bottom: 10px;
+    font-size: 2em;
+    font-family: 'Georgia', serif; /* Serif font for the title */
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #222;
 }
 
 .text-section p {
     font-size: 1.1em;
     margin-bottom: 20px;
+    color: #444;
+    line-height: 1.6; /* Improved readability */
 }
 
+/* Signup Form */
 .signup-form {
     text-align: center;
 }
 
 .signup-form input[type="email"] {
-    padding: 10px;
+    padding: 15px;
     font-size: 1em;
-    width: 300px;
-    margin-right: 10px;
+    width: 100%;
+    max-width: 300px;
+    border: 2px solid #ddd;
+    border-radius: 25px; /* Strongly rounded corners */
+    margin-bottom: 10px;
+    font-family: 'Arial', sans-serif;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle inset shadow for depth */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.signup-form input[type="email"]:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue focus effect */
+    outline: none;
 }
 
 .signup-form button {
-    padding: 10px 20px;
+    padding: 15px 30px;
     font-size: 1em;
     background-color: #007BFF;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px; /* Match input's rounded corners */
     cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s;
 }
 
 .signup-form button:hover {
@@ -284,7 +309,7 @@ body {
     .product-container {
         flex-direction: column;
         gap: 20px;
-        padding: 0 10px;
+        padding: 20px 10px;
     }
 
     .image-section {
@@ -292,7 +317,7 @@ body {
     }
 
     .thumbnail-gallery {
-        position: static; /* Remove sticky behavior on smaller screens */
+        position: static;
         margin-top: 10px;
         padding: 0;
         background: none;
@@ -302,12 +327,9 @@ body {
         text-align: center;
     }
 
-    .signup-form input[type="email"] {
-        width: 100%; /* Full-width input for mobile */
-        margin-bottom: 10px;
-    }
-
+    .signup-form input[type="email"],
     .signup-form button {
-        width: 100%; /* Full-width button for mobile */
+        width: 100%; /* Full width for mobile */
     }
 }
+
