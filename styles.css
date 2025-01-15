@@ -165,95 +165,69 @@ body {
     transform: translateY(40%);  /* Stagger odd-numbered images */
   }
 }
-/* Styling for mirg.html */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f7f5f2; /* Beige background for the page */
-}
-
-/* Main container wrapper */
-.product-container-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    background-color: #f7f5f2; /* Beige background for the wrapper */
-}
-
-/* Main box */
-.product-container {
-    background-color: #ffffff; /* White background for the box */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+/* Wrapper for the whole content */
+.wrapper {
     max-width: 1200px;
-    width: 100%;
-    border-radius: 0; /* Removed rounded corners */
+    margin: 0 auto; /* Center horizontally */
+    padding: 20px;
+    background-color: #f5f5f0; /* Grey-beige color */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Header styling */
+/* Header styles */
 .mirg-header {
     text-align: center;
     margin-bottom: 20px;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
 }
 
 .mirg-header h1 {
     font-size: 2.5em;
     font-weight: bold;
-    color: #222;
     margin: 0;
+    color: #222;
 }
 
 .mirg-header p {
     font-size: 1.2em;
+    margin-top: 10px;
     color: #666;
-    margin: 5px 0 0;
 }
 
-/* Content container */
-.product-container-content {
+/* Main container styles */
+.product-container {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-@media (min-width: 768px) {
-    .product-container-content {
-        flex-direction: row;
-    }
+    flex-direction: row;
+    gap: 40px;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 /* Image Section */
 .image-section {
-    flex: 2;
+    flex: 3;
     text-align: center;
 }
 
 .image-section .main-image img {
     max-width: 100%;
     height: auto;
-    border-radius: 0; /* Removed rounded corners */
+    display: block;
+    margin: 0 auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
 }
 
 .thumbnail-gallery {
     display: flex;
     justify-content: center;
     gap: 10px;
-    flex-wrap: wrap;
-    position: sticky;
-    bottom: 0;
+    margin-top: 10px;
 }
 
 .thumbnail-gallery img {
     width: 80px;
     height: 80px;
     object-fit: cover;
-    border-radius: 5px; /* Kept thumbnails rounded */
+    border-radius: 5px;
     cursor: pointer;
     border: 2px solid transparent;
     transition: border-color 0.3s;
@@ -265,7 +239,7 @@ body {
 
 /* Text Section */
 .text-section {
-    flex: 1;
+    flex: 2;
     text-align: left;
 }
 
@@ -281,37 +255,49 @@ body {
     color: #555;
 }
 
-/* Sign-up form */
+/* Signup Form */
 .signup-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    align-items: center;
 }
 
 .signup-form input[type="email"] {
     padding: 10px;
     font-size: 1em;
     width: 100%;
-    max-width: 300px;
     border: 1px solid #ccc;
-    border-radius: 20px; /* Kept rounded corners for input */
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
 .signup-form button {
     padding: 10px;
     font-size: 1em;
-    width: 100%;
-    max-width: 300px;
     background-color: #007BFF;
     color: white;
     border: none;
-    border-radius: 20px; /* Kept rounded corners for button */
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    width: 100%;
 }
 
 .signup-form button:hover {
     background-color: #0056b3;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .product-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .text-section {
+        text-align: center;
+    }
+
+    .signup-form input[type="email"],
+    .signup-form button {
+        width: 100%;
+    }
 }
