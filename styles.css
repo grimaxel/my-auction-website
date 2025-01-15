@@ -165,3 +165,59 @@ body {
     transform: translateY(40%);  /* Stagger odd-numbered images */
   }
 }
+/* Styling for mirg.html */
+.mirg-header {
+    text-align: center;
+    font-size: 2.5em;
+    margin: 20px 0;
+    color: #333;
+}
+
+.mirg-section {
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 10px 20px;
+}
+
+.mirg-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+.mirg-feature {
+    flex: 1 1 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.mirg-signup-form {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.mirg-signup-form input[type="email"] {
+    padding: 10px;
+    font-size: 1em;
+    width: 300px;
+    margin-right: 10px;
+}
+
+.mirg-signup-form button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.mirg-signup-form button:hover {
+    background-color: #0056b3;
+}
+
