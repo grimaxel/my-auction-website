@@ -170,9 +170,17 @@ body {
     max-width: 1200px;
     margin: 0 auto; /* Center horizontally */
     padding: 20px;
-    background-color: #eae7dc; /* Updated grey-beige color */
+    background-color: #ded9d5; /* Subtle grey-beige similar to the mockup */
     font-family: 'Georgia', 'Times New Roman', serif; /* Serif font for text */
     color: #333;
+    box-sizing: border-box;
+}
+
+/* Background for the whole page */
+body {
+    background-color: #ccc; /* Darker grey like the mockup */
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 /* Header styles */
@@ -182,7 +190,7 @@ body {
 }
 
 .mirg-header h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     font-weight: bold;
     margin: 0;
     color: #222;
@@ -207,7 +215,7 @@ body {
 
 /* Image Section */
 .image-section {
-    flex: 4; /* Larger space for images */
+    flex: 5; /* Larger space for images */
     text-align: center;
     position: relative;
 }
@@ -249,7 +257,7 @@ body {
 
 /* Text Section */
 .text-section {
-    flex: 2; /* Smaller space for text */
+    flex: 3; /* Smaller space for text */
     text-align: left;
     padding-right: 20px; /* Add space to the right */
     font-family: Arial, sans-serif; /* Sans-serif for body text */
@@ -263,9 +271,11 @@ body {
 }
 
 .text-section p {
-    font-size: 1.1em;
+    font-size: 0.9em; /* Smaller font size for professional look */
     margin-bottom: 20px;
     color: #555;
+    line-height: 1.5; /* Better line spacing for readability */
+    text-align: justify; /* Align text to make straight left and right sides */
 }
 
 /* Signup Form */
@@ -319,3 +329,4 @@ body {
         width: 100%;
     }
 }
+
