@@ -165,85 +165,122 @@ body {
     transform: translateY(40%);  /* Stagger odd-numbered images */
   }
 }
-/* General Centering for mirg.html */
-.mirg-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 20px;
-}
-
+/* Styling for mirg.html */
 .mirg-header {
-    margin: 40px auto 20px auto;
+    text-align: center;
+    margin: 60px auto;
+    color: #333;
 }
 
 .mirg-header h1 {
     font-size: 2.5em;
     font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
+    margin: 0;
+    color: #222;
 }
 
 .mirg-header p {
     font-size: 1.2em;
-    color: #666;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    color: #555;
 }
 
-/* Styling the image gallery */
-.image-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin: 20px auto;
+.mirg-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto;
 }
 
-.image-gallery img {
-    width: 100%;
+.mirg-product img {
+    max-width: 100%;
+    height: auto;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.image-gallery img:hover {
-    transform: scale(1.05);
+.mirg-details {
+    margin: 40px auto;
+    padding: 0 20px;
+    max-width: 800px;
+    text-align: center;
 }
 
-/* Features Section */
-.product-details ul {
+.mirg-details h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.mirg-details p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.mirg-details ul {
     list-style: none;
     padding: 0;
-    margin: 20px auto;
     display: flex;
-    gap: 20px;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
 
-.product-details li {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+.mirg-details li {
     flex: 1 1 200px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-size: 1em;
+}
+
+.mirg-signup {
     text-align: center;
-    max-width: 300px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Signup Section */
-.signup {
-    margin-top: 30px;
+.mirg-signup h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.signup input[type="email"] {
+.mirg-signup p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.mirg-signup form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.mirg-signup input[type="email"] {
     padding: 10px;
     font-size: 1em;
     width: 300px;
-    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
 }
 
-.signup button {
+.mirg-signup input[type="email"]:focus {
+    border-color: #007BFF;
+}
+
+.mirg-signup button {
     padding: 10px 20px;
     font-size: 1em;
     background-color: #007BFF;
@@ -251,9 +288,9 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.signup button:hover {
+.mirg-signup button:hover {
     background-color: #0056b3;
 }
-
