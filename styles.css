@@ -178,11 +178,10 @@ body {
 
 /* Background for the whole page */
 body {
-    background-color: #a9a8a4; /* Darker grey like the mockup */
+    background: radial-gradient(circle at bottom left, #a9a8a4, #ded9d5);
     margin: 0;
     font-family: Arial, sans-serif;
 }
-
 /* Header styles */
 .mirg-header {
     text-align: center;
