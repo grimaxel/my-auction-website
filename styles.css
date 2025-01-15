@@ -170,7 +170,7 @@ body {
     max-width: 1200px;
     margin: 0 auto; /* Center horizontally */
     padding: 20px;
-    background-color: #ded9d5; /* Subtle grey-beige similar to the mockup */
+    background-color: #cfcdc9; /* Subtle grey-beige similar to the mockup */
     font-family: 'Georgia', 'Times New Roman', serif; /* Serif font for text */
     color: #333;
     box-sizing: border-box;
@@ -178,7 +178,7 @@ body {
 
 /* Background for the whole page */
 body {
-    background-color: #ccc; /* Darker grey like the mockup */
+    background-color: #a9a8a4; /* Darker grey like the mockup */
     margin: 0;
     font-family: Arial, sans-serif;
 }
@@ -215,7 +215,7 @@ body {
 
 /* Image Section */
 .image-section {
-    flex: 5; /* Larger space for images */
+    flex: 6; /* Larger space for images */
     text-align: center;
     position: relative;
 }
@@ -257,7 +257,7 @@ body {
 
 /* Text Section */
 .text-section {
-    flex: 3; /* Smaller space for text */
+    flex: 2; /* Smaller space for text */
     text-align: left;
     padding-right: 20px; /* Add space to the right */
     font-family: Arial, sans-serif; /* Sans-serif for body text */
