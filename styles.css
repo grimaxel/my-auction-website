@@ -174,14 +174,38 @@ body {
     font-family: 'Georgia', 'Times New Roman', serif; /* Serif font for text */
     color: #333;
     box-sizing: border-box;
+    position: relative; /* Needed for pseudo-elements */
+}
+
+/* Borders for left and right sides (only on desktop) */
+@media (min-width: 768px) {
+    .wrapper::before,
+    .wrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 5px; /* Width of the border */
+    }
+
+    .wrapper::before {
+        left: -10px; /* Slight offset to the left */
+        background-color: #b0b0b0; /* Left border color */
+    }
+
+    .wrapper::after {
+        right: -10px; /* Slight offset to the right */
+        background-color: #bfbdbc; /* Right border color */
+    }
 }
 
 /* Background for the whole page */
 body {
-    background: radial-gradient(circle at bottom left, #a9a8a4, #ded9d5);
+    background: radial-gradient(circle at bottom left, #43413f, #aeacaa);
     margin: 0;
     font-family: Arial, sans-serif;
 }
+
 /* Header styles */
 .mirg-header {
     text-align: center;
