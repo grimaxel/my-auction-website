@@ -170,7 +170,7 @@ body {
     max-width: 1200px;
     margin: 0 auto; /* Center horizontally */
     padding: 20px;
-    background-color: #a8a8a5; /* Updated grey-beige color */
+    background-color: #ccccc8; /* Updated grey-beige color */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -204,7 +204,7 @@ body {
 
 /* Image Section */
 .image-section {
-    flex: 3.5; /* Increase flex ratio for the image */
+    flex: 4; /* Increased flex ratio for the image (20% more space) */
     text-align: center;
     position: relative;
 }
@@ -246,7 +246,7 @@ body {
 
 /* Text Section */
 .text-section {
-    flex: 2.5; /* Decrease flex ratio for text section */
+    flex: 2; /* Reduced flex ratio for text section (20% less space) */
     text-align: left;
     padding-right: 20px; /* Add space to the right */
 }
@@ -312,3 +312,4 @@ body {
         width: 100%;
     }
 }
+
