@@ -168,12 +168,12 @@ body {
 /* Styling for mirg.html */
 .mirg-header {
     text-align: center;
-    margin: 60px auto;
+    margin: 40px auto;
     color: #333;
 }
 
 .mirg-header h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     font-weight: bold;
     margin: 0;
     color: #222;
@@ -182,44 +182,29 @@ body {
 .mirg-header p {
     font-size: 1.2em;
     margin-top: 10px;
-    color: #555;
+    color: #666;
 }
 
-.mirg-product {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.product-intro {
+    text-align: center;
     margin: 40px auto;
+    padding: 0 20px;
 }
 
-.mirg-product img {
+.product-intro img {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
 }
 
-.mirg-details {
+.product-details {
     margin: 40px auto;
     padding: 0 20px;
     max-width: 800px;
-    text-align: center;
 }
 
-.mirg-details h2 {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    color: #222;
-}
-
-.mirg-details p {
-    font-size: 1.1em;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    color: #555;
-}
-
-.mirg-details ul {
+.product-details ul {
     list-style: none;
     padding: 0;
     display: flex;
@@ -228,59 +213,28 @@ body {
     gap: 20px;
 }
 
-.mirg-details li {
+.product-details li {
     flex: 1 1 200px;
-    padding: 15px;
+    text-align: center;
+    padding: 10px;
     background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
-.mirg-signup {
+.signup {
     text-align: center;
     margin: 40px auto;
-    padding: 20px;
-    background-color: #f8f8f8;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.mirg-signup h2 {
-    font-size: 1.8em;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.mirg-signup p {
-    font-size: 1.1em;
-    margin-bottom: 20px;
-    color: #666;
-}
-
-.mirg-signup form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.mirg-signup input[type="email"] {
+.signup input[type="email"] {
     padding: 10px;
     font-size: 1em;
     width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s;
+    margin-right: 10px;
 }
 
-.mirg-signup input[type="email"]:focus {
-    border-color: #007BFF;
-}
-
-.mirg-signup button {
+.signup button {
     padding: 10px 20px;
     font-size: 1em;
     background-color: #007BFF;
@@ -288,9 +242,8 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.mirg-signup button:hover {
+.signup button:hover {
     background-color: #0056b3;
 }
