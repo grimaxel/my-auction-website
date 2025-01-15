@@ -202,19 +202,26 @@ body {
 }
 
 .image-section .main-image img {
-    max-width: 90%; /* Adjusted size to fit thumbnails */
+    max-width: 100%;
     height: auto;
     border-radius: 10px;
-    margin-bottom: 10px; /* Reduced margin */
+    margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Thumbnail Gallery */
 .thumbnail-gallery {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 10px; /* Add space between main image and thumbnails */
-    flex-wrap: wrap; /* Allow thumbnails to wrap if needed */
+    margin-top: 10px; /* Space between main image and thumbnails */
+    flex-wrap: wrap; /* Allow wrapping if necessary */
+    position: sticky; /* Make it stick to the viewport */
+    bottom: 0; /* Stick to the bottom of the viewport */
+    z-index: 10; /* Ensure it overlays the main image */
+    background: rgba(255, 255, 255, 0.8); /* Optional: Add slight background for better visibility */
+    padding: 10px; /* Optional: Add padding to avoid overlap */
+    border-radius: 5px; /* Optional: Add slight rounded edges */
 }
 
 .thumbnail-gallery img {
@@ -272,20 +279,35 @@ body {
     background-color: #0056b3;
 }
 
-/* Media Query for Mobile View */
+/* Mobile-specific adjustments */
 @media (max-width: 768px) {
     .product-container {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .image-section {
+        text-align: center;
+    }
+
+    .thumbnail-gallery {
+        position: static; /* Remove sticky behavior on smaller screens */
+        margin-top: 10px;
+        padding: 0;
+        background: none;
     }
 
     .text-section {
-        text-align: center; /* Center-align text for better readability */
-        margin-top: 20px;
+        text-align: center;
     }
 
-    .image-section .main-image img {
-        max-width: 100%; /* Allow image to scale fully on smaller screens */
+    .signup-form input[type="email"] {
+        width: 100%; /* Full-width input for mobile */
+        margin-bottom: 10px;
+    }
+
+    .signup-form button {
+        width: 100%; /* Full-width button for mobile */
     }
 }
-
