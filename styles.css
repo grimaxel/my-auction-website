@@ -170,8 +170,9 @@ body {
     max-width: 1200px;
     margin: 0 auto; /* Center horizontally */
     padding: 20px;
-    background-color: #ccccc8; /* Updated grey-beige color */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #eae7dc; /* Updated grey-beige color */
+    font-family: 'Georgia', 'Times New Roman', serif; /* Serif font for text */
+    color: #333;
 }
 
 /* Header styles */
@@ -185,12 +186,14 @@ body {
     font-weight: bold;
     margin: 0;
     color: #222;
+    font-family: 'Georgia', serif; /* Serif font for title */
 }
 
 .mirg-header p {
     font-size: 1.2em;
     margin-top: 10px;
     color: #666;
+    font-family: Arial, sans-serif; /* Sans-serif for subtitle */
 }
 
 /* Main container styles */
@@ -204,7 +207,7 @@ body {
 
 /* Image Section */
 .image-section {
-    flex: 4; /* Increased flex ratio for the image (20% more space) */
+    flex: 4; /* Larger space for images */
     text-align: center;
     position: relative;
 }
@@ -214,7 +217,7 @@ body {
     height: auto;
     display: block;
     margin: 0 auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: none; /* Remove any border effects */
 }
 
 /* Sticky thumbnails */
@@ -236,7 +239,7 @@ body {
     object-fit: cover;
     border-radius: 5px;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 1px solid transparent; /* Remove border effects */
     transition: border-color 0.3s;
 }
 
@@ -246,15 +249,17 @@ body {
 
 /* Text Section */
 .text-section {
-    flex: 2; /* Reduced flex ratio for text section (20% less space) */
+    flex: 2; /* Smaller space for text */
     text-align: left;
     padding-right: 20px; /* Add space to the right */
+    font-family: Arial, sans-serif; /* Sans-serif for body text */
 }
 
 .text-section h2 {
     font-size: 1.8em;
     margin-bottom: 10px;
     color: #333;
+    font-family: 'Georgia', serif; /* Serif font for emphasis */
 }
 
 .text-section p {
@@ -277,6 +282,8 @@ body {
     border-radius: 25px; /* Rounded corners */
     width: 100%; /* Match the button's width */
     box-sizing: border-box; /* Ensure consistent sizing */
+    font-family: Arial, sans-serif; /* Clean font for input */
+    color: #333;
 }
 
 .signup-form button {
@@ -312,4 +319,3 @@ body {
         width: 100%;
     }
 }
-
