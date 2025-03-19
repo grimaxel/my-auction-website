@@ -8,35 +8,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const row = data.table3Records[0]; // Fetch the first row from Table 3
-            const fields = row.fields;
-
-            // Set description
-            document.getElementById('description').textContent = fields.description || "No description available.";
-
-            // Set main image
-            const mainImage = document.getElementById('mainImage');
-            const thumbnailGallery = document.getElementById('thumbnailGallery');
-            thumbnailGallery.innerHTML = ""; // Clear existing thumbnails
-
-            let imagesArray = fields.images;
-
-            if (Array.isArray(imagesArray)) {
-                imagesArray = imagesArray.map(img => img.url || img); // Ensure correct URL format
-            } else {
-                imagesArray = [];
-            }
+            // Extract all image URLs from all rows
+            let imagesArray = [];
+            data.table3Records.forEach(row => {
+                if (row.fields.images) {
+                    imagesArray.push(row.fields.images); // Push each image URL to the array
+                }
+            });
 
             console.log("Fetched images from Airtable:", imagesArray); // Debugging output
 
-            if (imagesArray.length > 0) {
-                mainImage.src = imagesArray[0]; // Use first image as main
-                mainImage.alt = "Product Image";
-            } else {
+            if (imagesArray.length === 0) {
                 console.error("No images found in Table 3.");
+                return;
             }
 
-            // Populate thumbnails and add click event to switch main image
+            // Set main image (first image in the array)
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = imagesArray[0];
+            mainImage.alt = "Product Image";
+
+            // Populate thumbnails
+            const thumbnailGallery = document.getElementById('thumbnailGallery');
+            thumbnailGallery.innerHTML = ""; // Clear existing thumbnails
+
             imagesArray.forEach((imgUrl, index) => {
                 const thumbnail = document.createElement('img');
                 thumbnail.src = imgUrl;
@@ -50,39 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         })
         .catch(error => console.error("Error fetching data for mirg.html:", error));
-
-    // Handle signup form submission
-    document.getElementById("signup-form").addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent page reload
-
-        const emailInput = document.getElementById("email");
-        const email = emailInput.value.trim();
-
-        if (email) {
-            fetch("/.netlify/functions/storeEmailTable3", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("Successfully signed up!");
-                        emailInput.value = ""; // Clear input field
-                    } else {
-                        alert("Error signing up. Please try again.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error submitting email:", error);
-                    alert("Error signing up. Please try again.");
-                });
-        } else {
-            alert("Please enter a valid email.");
-        }
-    });
 });
+
 
 
