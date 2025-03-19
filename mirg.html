@@ -20,13 +20,17 @@
                 <div class="main-image">
                     <img id="mainImage" src="" alt="Main Product Image">
                 </div>
-                <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+                <div class="thumbnail-gallery">
+                    <div id="thumbnailScroll" class="thumbnail-scroll">
+                        <!-- Thumbnails will be inserted here dynamically -->
+                    </div>
+                </div>
             </section>
 
             <section class="text-section">
                 <h2>This object isn't for sale just yet, but you can be the first to know when it is!</h2>
-                <p id="description">Not quite a dining table, not quite a coffee table—but definitely all the mid-century style you need. If you’re like Finn Juhl and have space for a table in your bedroom, this should be right up your alley!</p>
-                <form action="#" method="POST" class="signup-form">
+                <p id="description">Loading...</p>
+                <form id="signup-form" class="signup-form">
                     <label for="email">Sign up for more information:</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
                     <button type="submit">Sign Up</button>
