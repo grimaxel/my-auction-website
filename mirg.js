@@ -8,25 +8,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Extract all image URLs from all rows
+            const records = data.table3Records; // All rows from Table 3
             let imagesArray = [];
-            data.table3Records.forEach(row => {
+
+            // Collect all images from the 'images' column across all rows
+            records.forEach(row => {
                 if (row.fields.images) {
-                    imagesArray.push(row.fields.images); // Push each image URL to the array
+                    imagesArray.push(row.fields.images); // Add image URL to array
                 }
             });
 
             console.log("Fetched images from Airtable:", imagesArray); // Debugging output
 
-            if (imagesArray.length === 0) {
-                console.error("No images found in Table 3.");
-                return;
-            }
+            // Set description (only from the first row)
+            document.getElementById('description').textContent = records[0].fields.description || "No description available.";
 
-            // Set main image (first image in the array)
+            // Set main image (first image in array)
             const mainImage = document.getElementById('mainImage');
-            mainImage.src = imagesArray[0];
-            mainImage.alt = "Product Image";
+            if (imagesArray.length > 0) {
+                mainImage.src = imagesArray[0]; // Use first image as default
+                mainImage.alt = "Product Image";
+            } else {
+                console.error("No images found in Table 3.");
+            }
 
             // Populate thumbnails
             const thumbnailGallery = document.getElementById('thumbnailGallery');
@@ -45,7 +49,38 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         })
         .catch(error => console.error("Error fetching data for mirg.html:", error));
+
+    // Handle signup form submission
+    document.getElementById("signup-form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent page reload
+
+        const emailInput = document.getElementById("email");
+        const email = emailInput.value.trim();
+
+        if (email) {
+            fetch("/.netlify/functions/storeEmailTable3", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Successfully signed up!");
+                        emailInput.value = ""; // Clear input field
+                    } else {
+                        alert("Error signing up. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error submitting email:", error);
+                    alert("Error signing up. Please try again.");
+                });
+        } else {
+            alert("Please enter a valid email.");
+        }
+    });
 });
-
-
 
