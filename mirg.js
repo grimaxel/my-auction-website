@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Fetch data from Airtable (Table 3)
-    fetch('/.netlify/functions/fetchTable3')
+    fetch('/.netlify/functions/fetchAirtable') // Use the existing function
         .then(response => response.json())
         .then(data => {
-            if (!data || !data.records || data.records.length === 0) {
+            if (!data || !data.table3Records || data.table3Records.length === 0) {
                 console.error("No data found in Airtable Table 3.");
                 return;
             }
 
-            const row = data.records[0]; // Fetch the first row from Table 3
+            const row = data.table3Records[0]; // Fetch the first row from Table 3
             const fields = row.fields;
 
             // Set description
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             mainImage.src = fields["Image 1"] || "";
             mainImage.alt = "Product Image";
 
-            // Populate thumbnails
+            // Populate thumbnails (carousel scrolling)
             const thumbnailScroll = document.getElementById('thumbnailScroll');
             thumbnailScroll.innerHTML = ""; // Clear existing thumbnails
 
