@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch('/.netlify/functions/fetchAirtable')
         .then(response => response.json())
         .then(data => {
+            console.log("Full Airtable response:", data); // Debugging: Show full response
+
             if (!data || !data.table3Records || data.table3Records.length === 0) {
                 console.error("No data found in Airtable Table 3.");
                 return;
@@ -16,12 +18,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Set main image
             const mainImage = document.getElementById('mainImage');
-            let imagesArray = fields.images;
+            let imagesArray = [];
 
-            if (Array.isArray(imagesArray)) {
-                imagesArray = imagesArray.map(img => img.url || img); // Ensure correct URL format
-            } else {
-                imagesArray = [];
+            if (typeof fields.images === "string" && fields.images.trim() !== "") {
+                // Check if it's a single URL or a list of comma-separated URLs
+                imagesArray = fields.images.includes(",") 
+                    ? fields.images.split(',').map(url => url.trim()) 
+                    : [fields.images.trim()];
             }
 
             console.log("Fetched images from Airtable:", imagesArray); // Debugging output
@@ -34,7 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Populate thumbnails
-            const thumbnailGallery = document.getElementById('thumbnailGallery');
+            const thumbnailGallery = document.getElementById('thumbnailScroll');
+            if (!thumbnailGallery) {
+                console.error("Thumbnail gallery element not found.");
+                return;
+            }
+
             thumbnailGallery.innerHTML = ""; // Clear existing thumbnails
 
             imagesArray.forEach((imgUrl, index) => {
@@ -49,7 +57,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 thumbnailGallery.appendChild(thumbnail);
             });
         })
-        .catch(error => console.error("Error fetching data for mirg.html:", error));
+        .catch(error => {
+            console.error("Error fetching data for mirg.html:", error);
+        });
 
     // Handle signup form submission
     document.getElementById("signup-form").addEventListener("submit", function (event) {
