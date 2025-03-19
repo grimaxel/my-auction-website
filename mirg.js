@@ -16,7 +16,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Set main image
             const mainImage = document.getElementById('mainImage');
-            const imagesArray = fields.images || []; // Ensure images exist
+            let imagesArray = fields.images;
+
+            if (Array.isArray(imagesArray)) {
+                imagesArray = imagesArray.map(img => img.url || img); // Ensure correct URL format
+            } else {
+                imagesArray = [];
+            }
+
+            console.log("Fetched images from Airtable:", imagesArray); // Debugging output
 
             if (imagesArray.length > 0) {
                 mainImage.src = imagesArray[0]; // Use first image as main
@@ -26,8 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Populate thumbnails
-            const thumbnailScroll = document.getElementById('thumbnailGallery');
-            thumbnailScroll.innerHTML = ""; // Clear existing thumbnails
+            const thumbnailGallery = document.getElementById('thumbnailGallery');
+            thumbnailGallery.innerHTML = ""; // Clear existing thumbnails
 
             imagesArray.forEach((imgUrl, index) => {
                 const thumbnail = document.createElement('img');
@@ -38,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     mainImage.src = imgUrl;
                     mainImage.alt = "Product Image";
                 };
-                thumbnailScroll.appendChild(thumbnail);
+                thumbnailGallery.appendChild(thumbnail);
             });
         })
         .catch(error => console.error("Error fetching data for mirg.html:", error));
@@ -76,3 +84,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
