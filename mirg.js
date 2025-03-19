@@ -8,31 +8,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const records = data.table3Records; // All rows from Table 3
-            let imagesArray = [];
+            const row = data.table3Records[0]; // We still pick the first row (only for description)
+            const fields = row.fields;
 
-            // Collect all images from the 'images' column across all rows
-            records.forEach(row => {
-                if (row.fields.images) {
-                    imagesArray.push(row.fields.images); // Add image URL to array
-                }
-            });
+            // Set description text
+            document.getElementById('description').textContent = fields.description || "No description available.";
+
+            // Fetch images from the column "images"
+            let imagesArray = fields.images; // Ensure we fetch all images from the column
+
+            if (Array.isArray(imagesArray)) {
+                imagesArray = imagesArray.map(img => (typeof img === "object" ? img.url : img)); // Get proper URLs
+            } else {
+                imagesArray = [];
+            }
 
             console.log("Fetched images from Airtable:", imagesArray); // Debugging output
 
-            // Set description (only from the first row)
-            document.getElementById('description').textContent = records[0].fields.description || "No description available.";
-
-            // Set main image (first image in array)
+            // Update the main image if images exist
             const mainImage = document.getElementById('mainImage');
             if (imagesArray.length > 0) {
-                mainImage.src = imagesArray[0]; // Use first image as default
+                mainImage.src = imagesArray[0]; // Default to first image
                 mainImage.alt = "Product Image";
             } else {
                 console.error("No images found in Table 3.");
+                mainImage.src = ""; // Clear image if none found
             }
 
-            // Populate thumbnails
+            // Populate the thumbnail gallery
             const thumbnailGallery = document.getElementById('thumbnailGallery');
             thumbnailGallery.innerHTML = ""; // Clear existing thumbnails
 
@@ -83,4 +86,3 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
