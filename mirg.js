@@ -14,7 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
             // Collect all images from the 'images' column across all rows
             records.forEach(row => {
                 if (row.fields.images) {
-                    imagesArray.push(row.fields.images); // Add image URL to array
+                    row.fields.images.forEach(imageObj => {
+                        if (typeof imageObj === 'object' && imageObj.url) {
+                            imagesArray.push(imageObj.url); // Extract and push image URL
+                        } else if (typeof imageObj === 'string') {
+                            imagesArray.push(imageObj); // If it's already a URL string, push directly
+                        }
+                    });
                 }
             });
 
@@ -83,3 +89,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
