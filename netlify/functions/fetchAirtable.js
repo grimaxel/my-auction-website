@@ -10,17 +10,17 @@ exports.handler = async function (event, context) {
   // Fetch Table 2 (for modal content)
   const table2Url = `https://api.airtable.com/v0/${baseId}/Table%202?view=Grid%20view`;
 
+  // Fetch Table 3 (for mirg content)
+  const table3Url = `https://api.airtable.com/v0/${baseId}/Table%203?view=Grid%20view`;
+
   try {
-    const [table1Response, table2Response] = await Promise.all([
-      fetch(table1Url, {
-        headers: { Authorization: `Bearer ${apiKey}` },
-      }),
-      fetch(table2Url, {
-        headers: { Authorization: `Bearer ${apiKey}` },
-      })
+    const [table1Response, table2Response, table3Response] = await Promise.all([
+      fetch(table1Url, { headers: { Authorization: `Bearer ${apiKey}` } }),
+      fetch(table2Url, { headers: { Authorization: `Bearer ${apiKey}` } }),
+      fetch(table3Url, { headers: { Authorization: `Bearer ${apiKey}` } })
     ]);
 
-    if (!table1Response.ok || !table2Response.ok) {
+    if (!table1Response.ok || !table2Response.ok || !table3Response.ok) {
       return {
         statusCode: 500,
         body: `Airtable API request failed.`,
@@ -29,13 +29,15 @@ exports.handler = async function (event, context) {
 
     const table1Data = await table1Response.json();
     const table2Data = await table2Response.json();
+    const table3Data = await table3Response.json(); // Fetch Table 3 data
 
-    // Combine both tables into one response
+    // Combine all tables into one response
     return {
       statusCode: 200,
       body: JSON.stringify({
         table1Records: table1Data.records,
         table2Records: table2Data.records,
+        table3Records: table3Data.records, // Add Table 3 data
       }),
     };
   } catch (error) {
