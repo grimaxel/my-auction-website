@@ -168,7 +168,7 @@ body {
 /* Wrapper for the whole content */
 body.mirg-page .wrapper {
     max-width: 1100px;
-    margin: 50px auto; /* Center horizontally with vertical spacing */
+    margin: 50px auto;
     padding: 30px;
     background-color: #e6e4e1; /* Softer grey-beige for a refined look */
     font-family: 'Playfair Display', serif; /* Elegant serif font for titles */
@@ -235,14 +235,14 @@ body.mirg-page .mirg-header p {
 body.mirg-page .product-container {
     display: flex;
     flex-direction: row;
-    gap: 60px;
+    gap: 50px;
     justify-content: space-between;
     align-items: center;
 }
 
 /* Image Section */
 body.mirg-page .image-section {
-    flex: 7; /* Larger space for images */
+    flex: 7;
     text-align: center;
     position: relative;
 }
@@ -252,59 +252,53 @@ body.mirg-page .image-section .main-image img {
     height: auto;
     display: block;
     margin: 0 auto;
-    border-radius: 10px; /* Add a slight rounding to the image */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    border-radius: 10px;
 }
 
-/* Sticky thumbnails */
+/* Thumbnail scrolling */
 body.mirg-page .thumbnail-gallery {
+    overflow-x: auto;
+    white-space: nowrap;
     display: flex;
-    justify-content: center;
     gap: 10px;
-    margin-top: 20px;
-    position: sticky;
-    bottom: 20px;
-    z-index: 1;
-    background-color: transparent;
     padding: 10px 0;
+}
+
+body.mirg-page .thumbnail-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
 }
 
 body.mirg-page .thumbnail-gallery img {
     width: 80px;
-    height: 80px;
+    height: 120px;
     object-fit: cover;
     border-radius: 5px;
     cursor: pointer;
-    border: 1px solid #ccc;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s;
 }
 
 body.mirg-page .thumbnail-gallery img:hover {
     transform: scale(1.1);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Text Section */
 body.mirg-page .text-section {
-    flex: 3; /* Smaller space for text */
+    flex: 3;
     text-align: left;
     padding-right: 20px;
 }
 
 body.mirg-page .text-section h2 {
     font-size: 2em;
-    margin-bottom: 20px;
     color: #333;
-    font-family: 'Playfair Display', serif;
-    line-height: 1.2;
 }
 
 body.mirg-page .text-section p {
     font-size: 1em;
-    margin-bottom: 20px;
     color: #555;
-    line-height: 1.7;
-    font-family: 'Inter', sans-serif;
 }
 
 /* Signup Form */
@@ -354,13 +348,13 @@ body.mirg-page .signup-form button:hover {
 /* Mobile Styles */
 @media (max-width: 768px) {
     body.mirg-page .product-container {
-        flex-direction: column; /* Stack image and text vertically */
+        flex-direction: column;
         gap: 20px;
     }
 
     body.mirg-page .text-section {
-        text-align: center; /* Center-align text on mobile */
-        padding-right: 0; /* Remove padding */
+        text-align: center;
+        padding-right: 0;
     }
 
     body.mirg-page .signup-form input[type="email"],
@@ -372,5 +366,4 @@ body.mirg-page .signup-form button:hover {
         background-color: #676664; /* Static dark grey for mobile */
     }
 }
-
 
