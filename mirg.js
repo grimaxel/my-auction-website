@@ -1,39 +1,76 @@
-// Fetch data for the specific row (row 11) from Airtable
-fetch('/.netlify/functions/fetchAirtable')
-    .then(response => response.json())
-    .then(data => {
-        const table2Records = data.table2Records;
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch data from Airtable (Table 3)
+    fetch('/.netlify/functions/fetchTable3')
+        .then(response => response.json())
+        .then(data => {
+            if (!data || !data.records || data.records.length === 0) {
+                console.error("No data found in Airtable Table 3.");
+                return;
+            }
 
-        // Fetch data for row 11
-        const row = table2Records.find(record => record.fields['row number'] === 11);
-        if (row) {
+            const row = data.records[0]; // Fetch the first row from Table 3
             const fields = row.fields;
+
+            // Set description
+            document.getElementById('description').textContent = fields.Description || "No description available.";
 
             // Set main image
             const mainImage = document.getElementById('mainImage');
-            mainImage.src = fields['first image'];
-            mainImage.alt = fields.caption || "Product Image";
+            mainImage.src = fields["Image 1"] || "";
+            mainImage.alt = "Product Image";
 
-            // Set thumbnail gallery
-            const thumbnailGallery = document.getElementById('thumbnailGallery');
-            ['first image', 'second image', 'third image'].forEach(field => {
-                if (fields[field]) {
+            // Populate thumbnails
+            const thumbnailScroll = document.getElementById('thumbnailScroll');
+            thumbnailScroll.innerHTML = ""; // Clear existing thumbnails
+
+            let imageKeys = Object.keys(fields).filter(key => key.startsWith("Image"));
+
+            imageKeys.forEach((key, index) => {
+                if (fields[key]) {
                     const thumbnail = document.createElement('img');
-                    thumbnail.src = fields[field];
+                    thumbnail.src = fields[key];
                     thumbnail.alt = "Thumbnail Image";
-                    thumbnail.onclick = () => {
-                        mainImage.src = fields[field];
+                    thumbnail.dataset.index = index;
+                    thumbnail.onclick = function () {
+                        mainImage.src = fields[key];
                         mainImage.alt = "Product Image";
                     };
-                    thumbnailGallery.appendChild(thumbnail);
+                    thumbnailScroll.appendChild(thumbnail);
                 }
             });
+        })
+        .catch(error => console.error("Error fetching data for mirg.html:", error));
 
-            // Set description
-            const description = document.getElementById('description');
-            description.textContent = fields.caption || "No description available.";
+    // Handle signup form submission
+    document.getElementById("signup-form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent page reload
+
+        const emailInput = document.getElementById("email");
+        const email = emailInput.value.trim();
+
+        if (email) {
+            fetch("/.netlify/functions/storeEmailTable3", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Successfully signed up!");
+                        emailInput.value = ""; // Clear input field
+                    } else {
+                        alert("Error signing up. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error submitting email:", error);
+                    alert("Error signing up. Please try again.");
+                });
         } else {
-            console.error("Row not found.");
+            alert("Please enter a valid email.");
         }
-    })
-    .catch(error => console.error('Error fetching data for mirg.html:', error));
+    });
+});
