@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Fetch data from Airtable (Table 3)
-    fetch('/.netlify/functions/fetchAirtable') // Use the existing function
+    fetch('/.netlify/functions/fetchAirtable')
         .then(response => response.json())
         .then(data => {
             if (!data || !data.table3Records || data.table3Records.length === 0) {
@@ -12,31 +12,33 @@ document.addEventListener("DOMContentLoaded", function () {
             const fields = row.fields;
 
             // Set description
-            document.getElementById('description').textContent = fields.Description || "No description available.";
+            document.getElementById('description').textContent = fields.description || "No description available.";
 
             // Set main image
             const mainImage = document.getElementById('mainImage');
-            mainImage.src = fields["Image 1"] || "";
-            mainImage.alt = "Product Image";
+            const imagesArray = fields.images || []; // Ensure images exist
 
-            // Populate thumbnails (carousel scrolling)
-            const thumbnailScroll = document.getElementById('thumbnailScroll');
+            if (imagesArray.length > 0) {
+                mainImage.src = imagesArray[0]; // Use first image as main
+                mainImage.alt = "Product Image";
+            } else {
+                console.error("No images found in Table 3.");
+            }
+
+            // Populate thumbnails
+            const thumbnailScroll = document.getElementById('thumbnailGallery');
             thumbnailScroll.innerHTML = ""; // Clear existing thumbnails
 
-            let imageKeys = Object.keys(fields).filter(key => key.startsWith("Image"));
-
-            imageKeys.forEach((key, index) => {
-                if (fields[key]) {
-                    const thumbnail = document.createElement('img');
-                    thumbnail.src = fields[key];
-                    thumbnail.alt = "Thumbnail Image";
-                    thumbnail.dataset.index = index;
-                    thumbnail.onclick = function () {
-                        mainImage.src = fields[key];
-                        mainImage.alt = "Product Image";
-                    };
-                    thumbnailScroll.appendChild(thumbnail);
-                }
+            imagesArray.forEach((imgUrl, index) => {
+                const thumbnail = document.createElement('img');
+                thumbnail.src = imgUrl;
+                thumbnail.alt = "Thumbnail Image";
+                thumbnail.dataset.index = index;
+                thumbnail.onclick = function () {
+                    mainImage.src = imgUrl;
+                    mainImage.alt = "Product Image";
+                };
+                thumbnailScroll.appendChild(thumbnail);
             });
         })
         .catch(error => console.error("Error fetching data for mirg.html:", error));
